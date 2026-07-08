@@ -1,0 +1,118 @@
+---
+// Product lines
+const products = [
+  {
+    id: 'outboard',
+    name: 'Outboard',
+    tagline: 'The light one.',
+    power: '1–4.5 kW',
+    weight: '14.6 kg incl. battery',
+    runtime: '50 min full load',
+    desc: 'For anglers, kayakers, and small boats. Mount in minutes, launch from anywhere. The jet that fits your sport.',
+    cta: 'Explore outboard',
+  },
+  {
+    id: 'inboard',
+    name: 'Inboard',
+    tagline: 'For displacement drives.',
+    power: '1–10 kW',
+    weight: 'Integrated system',
+    runtime: '5000 rpm',
+    desc: 'A synthesis of performance and safety. All components coordinated and waterproof. The real economic alternative for intensive users.',
+    cta: 'Explore inboard',
+  },
+  {
+    id: 'pod',
+    name: 'Pod drive',
+    tagline: 'For shallow waters.',
+    power: '1–10 kW',
+    weight: 'Light + space-saving',
+    runtime: 'Full energy management',
+    desc: 'For sailboats, barges, yachts. Complete energy management in a closed, indestructible system. Land where others cannot.',
+    cta: 'Explore pod',
+  },
+];
+---
+
+<section id="products" class="section">
+  <div class="container">
+    <span class="eyebrow">Product lines</span>
+    <h2>One technology. Three forms.</h2>
+    <p class="section-lead">Every Sylents drive is a closed, blockage-free jet with no moving parts outside. Pick the form that fits your boat.</p>
+    <div class="product-grid">
+      {products.map((p) => (
+        <article class="card product-card" id={p.id}>
+          <div class="product-head">
+            <h3>{p.name}</h3>
+            <span class="product-tag">{p.tagline}</span>
+          </div>
+          <div class="product-specs">
+            <div><strong>{p.power}</strong><span>power</span></div>
+            <div><strong>{p.weight}</strong><span>weight</span></div>
+            <div><strong>{p.runtime}</strong><span>runtime</span></div>
+          </div>
+          <p class="product-desc">{p.desc}</p>
+          <a href={'#contact'} class="product-cta">{p.cta} →</a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.section-lead {
+  max-width: 640px;
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.product-card { display: flex; flex-direction: column; }
+.product-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+.product-head h3 { font-size: 1.4rem; }
+.product-tag {
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+.product-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.product-specs > div { display: flex; flex-direction: column; }
+.product-specs strong {
+  font-size: 0.95rem;
+  color: var(--color-light);
+  line-height: 1.2;
+}
+.product-specs span {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.2rem;
+}
+.product-desc {
+  flex: 1;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+.product-cta {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+@media (max-width: 900px) {
+  .product-grid { grid-template-columns: 1fr; }
+}
+</style>

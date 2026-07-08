@@ -1,0 +1,76 @@
+---
+// Hero — the pitch
+---
+
+<section class="hero">
+  <div class="container hero-inner">
+    <span class="eyebrow">Sylents · electric jet propulsion</span>
+    <h1>The first jet<br />for broad leisure use.</h1>
+    <p class="hero-sub">Jets were hard to handle. Until now. Silent, light, nothing moving outside — the jet, finally usable.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn">Request a demo</a>
+      <a href="#products" class="btn btn-ghost">See the drive</a>
+    </div>
+    <div class="spec-strip">
+      <div><strong>1–10 kW</strong><span>power range</span></div>
+      <div><strong>14.6 kg</strong><span>incl. battery</span></div>
+      <div><strong>50 min</strong><span>full load</span></div>
+      <div><strong>0</strong><span>moving parts outside</span></div>
+    </div>
+  </div>
+</section>
+
+<style>
+.hero {
+  padding-block: var(--spacing-80) var(--spacing-70);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 188, 212, 0.12), transparent 60%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; max-width: 820px; }
+.hero h1 {
+  margin-bottom: 1.25rem;
+}
+.hero-sub {
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  color: var(--color-text-main);
+  max-width: 600px;
+  margin-bottom: 2rem;
+}
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 3.5rem;
+}
+.spec-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--color-border);
+}
+.spec-strip > div {
+  display: flex;
+  flex-direction: column;
+}
+.spec-strip strong {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--color-light);
+  line-height: 1;
+}
+.spec-strip span {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 0.35rem;
+}
+@media (max-width: 720px) {
+  .spec-strip { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+}
+</style>

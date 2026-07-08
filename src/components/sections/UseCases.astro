@@ -1,0 +1,60 @@
+---
+// Use cases — who it's for
+const cases = [
+  { title: 'Anglers', desc: 'Get to the spot silently. Moor on any shore.' },
+  { title: 'Kayakers', desc: 'Back to start when the arms give out.' },
+  { title: 'Sailboats', desc: 'Light pod drive for protected waters.' },
+  { title: 'Yachts', desc: 'Tender that stores in the garage, launches silent.' },
+  { title: 'Rental fleets', desc: 'Low running cost, near-zero maintenance.' },
+  { title: 'Shallow waters', desc: 'Reed, sand, stones — nothing blocks it.' },
+];
+---
+
+<section id="use-cases" class="section">
+  <div class="container">
+    <span class="eyebrow">Use cases</span>
+    <h2>One jet. Many waters.</h2>
+    <div class="case-grid">
+      {cases.map((c) => (
+        <div class="case-card">
+          <h3>{c.title}</h3>
+          <p>{c.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+.case-card {
+  padding: 1.75rem;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.case-card:hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-bg-section);
+}
+.case-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 0.4rem;
+}
+.case-card p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+@media (max-width: 900px) {
+  .case-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .case-grid { grid-template-columns: 1fr; }
+}
+</style>

@@ -1,0 +1,96 @@
+---
+// Company teaser — investor angle
+const milestones = [
+  { year: '2019', label: 'Founded', desc: 'VERVE Water Mobility GmbH, Teningen DE' },
+  { year: '2020', label: 'First prototype', desc: 'Electric jet, no moving parts outside' },
+  { year: '2024', label: 'Serial product', desc: 'Sylents 1.2e outboarder in production' },
+  { year: '2025', label: 'Sylents 4.5e', desc: 'High-performance drive up to 4.5 kW' },
+];
+---
+
+<section id="company" class="section">
+  <div class="container company-grid">
+    <div>
+      <span class="eyebrow">Company</span>
+      <h2>Building the category.<br /><span class="text-primary">Not a better jet.</span></h2>
+      <p class="company-lead">Jets were always the better tech on water. They stayed niche because they were hard to handle. Sylents removes the friction — and opens jet propulsion to the broad leisure market for the first time.</p>
+      <div class="founders">
+        <div class="founder">
+          <strong>Hilmar Unterrainer</strong>
+          <span>Industrial Engineer · Co-founder</span>
+        </div>
+        <div class="founder">
+          <strong>Johann Waldherr</strong>
+          <span>MSc Computer Science · Co-founder</span>
+        </div>
+      </div>
+      <a href="#contact" class="btn btn-ghost">Investor deck →</a>
+    </div>
+    <div class="timeline">
+      {milestones.map((m) => (
+        <div class="milestone">
+          <div class="milestone-year">{m.year}</div>
+          <div class="milestone-body">
+            <strong>{m.label}</strong>
+            <p>{m.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.company-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+.company-lead {
+  max-width: 480px;
+  font-size: 1.1rem;
+  margin: 1.25rem 0 2rem;
+}
+.founders {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+.founder strong { display: block; color: var(--color-light); font-size: 1rem; }
+.founder span { font-size: 0.85rem; color: var(--color-text-muted); }
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+  border-left: 2px solid var(--color-border);
+}
+.milestone {
+  position: relative;
+  padding-bottom: 2rem;
+}
+.milestone:last-child { padding-bottom: 0; }
+.milestone::before {
+  content: '';
+  position: absolute;
+  left: -2.4rem;
+  top: 0.4rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 2px solid var(--color-dark);
+}
+.milestone-year {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+.milestone-body strong { color: var(--color-light); font-size: 1.05rem; }
+.milestone-body p { font-size: 0.9rem; margin-top: 0.15rem; }
+@media (max-width: 800px) {
+  .company-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+</style>

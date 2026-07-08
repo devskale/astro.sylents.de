@@ -1,0 +1,85 @@
+---
+// Cost of freedom — electric vs petrol
+---
+
+<section class="section cost-section">
+  <div class="container cost-grid">
+    <div>
+      <span class="eyebrow">Cost of freedom</span>
+      <h2>Cheaper to run. By a lot.</h2>
+      <p class="cost-lead">Electricity costs a fraction of petrol. No oil changes, no winterisation, no engine service. Over a season, the savings pay for the drive.</p>
+      <a href="#contact" class="btn">Calculate your savings</a>
+    </div>
+    <div class="cost-compare">
+      <div class="cost-row petrol">
+        <div class="cost-label">
+          <strong>Petrol</strong>
+          <span>per hour</span>
+        </div>
+        <div class="cost-amount">€24.80</div>
+      </div>
+      <div class="cost-row electric">
+        <div class="cost-label">
+          <strong>Sylents</strong>
+          <span>per hour</span>
+        </div>
+        <div class="cost-amount">€1.20</div>
+      </div>
+      <div class="cost-saving">
+        <span>Over a 50-hour season</span>
+        <strong>~€1,180 saved</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.cost-section {
+  background: var(--color-bg-section);
+  border-block: 1px solid var(--color-border);
+}
+.cost-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.cost-lead {
+  max-width: 480px;
+  font-size: 1.1rem;
+  margin: 1.25rem 0 2rem;
+}
+.cost-compare {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+.cost-row.petrol { background: rgba(255,255,255,0.02); }
+.cost-row.electric { background: rgba(0, 188, 212, 0.08); border-color: var(--color-border-strong); }
+.cost-label { display: flex; flex-direction: column; }
+.cost-label strong { font-size: 1.05rem; color: var(--color-light); }
+.cost-label span { font-size: 0.8rem; color: var(--color-text-muted); }
+.cost-amount { font-size: 1.75rem; font-weight: 700; color: var(--color-light); }
+.cost-row.electric .cost-amount { color: var(--color-primary); }
+.cost-saving {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.75rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--color-border);
+}
+.cost-saving span { color: var(--color-text-secondary); }
+.cost-saving strong { font-size: 1.25rem; color: var(--color-accent); }
+@media (max-width: 800px) {
+  .cost-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+</style>

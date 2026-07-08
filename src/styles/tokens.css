@@ -1,0 +1,152 @@
+/* Sylents Design System — Global Styles */
+/* Light theme, matching the original WP site (white bg, #333 text, cyan #00bcd4 h2) */
+
+:root {
+  /* Colors */
+  --color-primary: #00bcd4; /* cyan — brand accent, h2, links */
+  --color-primary-hover: #019aae;
+  --color-primary-dark: #00728f; /* logo dark teal */
+  --color-dark: #333333; /* body text */
+  --color-heading: #333333;
+  --color-text-main: #333333;
+  --color-text-secondary: #666666;
+  --color-text-muted: #999999;
+  --color-bg: #ffffff;
+  --color-bg-alt: #f8f9fa; /* products / alt sections */
+  --color-bg-section: #ffffff;
+  --color-bg-card: #ffffff;
+  --color-border: #e5e5e5;
+  --color-border-strong: #00bcd4;
+
+  /* Font */
+  --font-family: 'Geist Sans', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing */
+  --spacing-30: 20px;
+  --spacing-40: 30px;
+  --spacing-50: clamp(30px, 5vw, 50px);
+  --spacing-60: clamp(30px, 7vw, 70px);
+  --spacing-70: clamp(50px, 10vw, 90px);
+  --spacing-80: clamp(70px, 10vw, 140px);
+
+  /* Layout */
+  --wide-size: 1340px;
+  --content-size: 645px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-family);
+  line-height: 1.6;
+  color: var(--color-text-main);
+  background-color: var(--color-bg);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+}
+
+main {
+  flex: 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-heading);
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h2 { color: var(--color-primary); }
+
+p {
+  color: var(--color-text-main);
+}
+
+a {
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover {
+  color: var(--color-primary);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Layout */
+.container {
+  width: 100%;
+  max-width: 1140px;
+  margin-inline: auto;
+  padding-inline: 15px;
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: var(--content-size);
+  margin-inline: auto;
+  padding-inline: var(--spacing-50);
+}
+
+.section {
+  padding-block: var(--spacing-70);
+}
+
+/* Eyebrow / label */
+.eyebrow {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+
+/* Button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  background-color: var(--color-primary);
+  color: #fff;
+  padding: 0.85em 1.6em;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.btn:hover {
+  background-color: var(--color-primary-hover);
+  color: #fff;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+
+.text-center { text-align: center; }
+.text-primary { color: var(--color-primary); }
+.text-muted { color: var(--color-text-muted); }

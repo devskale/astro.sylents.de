@@ -1,0 +1,59 @@
+---
+// Why jet — the problem reframed
+const problems = [
+  { icon: '🏋️', title: 'Heavy + trailer', fix: '14.6 kg incl. battery. Launch from any shoreline, no ramp.' },
+  { icon: '🔊', title: 'Loud + smelly', fix: 'Silent. No fuel, oil, or exhaust. Ride noise-restricted lakes.' },
+  { icon: '⚠️', title: 'Dangerous', fix: 'No moving parts outside. Injury-free. Safe to moor anywhere.' },
+  { icon: '🚫', title: 'Clogs in shallow water', fix: 'Closed system. Blockage-free. Sand, stones, reed — no problem.' },
+  { icon: '🎮', title: 'Hard to control', fix: 'Electric instant torque. Smooth at low speed, 30 kn at the top.' },
+  { icon: '🔧', title: 'High maintenance', fix: 'No oil, no winterisation. Rinse and done. Minimal service.' },
+];
+---
+
+<section id="why-jet" class="section">
+  <div class="container">
+    <span class="eyebrow">Why jet</span>
+    <h2>Jets were hard to handle.<br /><span class="text-primary">Not anymore.</span></h2>
+    <p class="section-lead">Jet propulsion was always the better idea on water. It stayed niche because it was loud, heavy, dangerous, and clog-prone. Sylents removes every reason it wasn't.</p>
+    <div class="problem-grid">
+      {problems.map((p) => (
+        <div class="card problem-card">
+          <div class="problem-icon">{p.icon}</div>
+          <h3>{p.title}</h3>
+          <p>{p.fix}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.section-lead {
+  max-width: 640px;
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.problem-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.problem-card p {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+.problem-icon {
+  font-size: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+@media (max-width: 900px) {
+  .problem-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .problem-grid { grid-template-columns: 1fr; }
+}
+</style>

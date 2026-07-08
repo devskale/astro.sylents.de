@@ -1,0 +1,739 @@
+---
+import '../styles/tokens.css';
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const canonical = new URL(Astro.url.pathname, site).toString().replace(/\/$/, '');
+
+const partners = [
+  { src: '/partner-zentipe.svg', alt: 'Zentipe Innovation AG' },
+  { src: '/partner-skale.svg', alt: 'skale.io' },
+  { src: '/partner-bild2.png', alt: 'partner' },
+  { src: '/partner-mpe.png', alt: 'MPE Ventures' },
+  { src: '/partner-bwcon.png', alt: 'bwcon' },
+  { src: '/partner-bild4.png', alt: 'partner' },
+  { src: '/partner-bild5.png', alt: 'partner' },
+];
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sylents – powerful electric waterjets. Der erste serienreife elektrische Jetantrieb." />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <title>Sylents – powerful electric waterjets</title>
+  </head>
+  <body>
+    <!-- Header / Nav — transparent at top, white on scroll -->
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="/sylents-2c_1-light.svg" alt="Sylents" class="logo-light" />
+          <img src="/sylents-2c_1.svg" alt="Sylents" class="logo-dark" />
+        </a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/produktseite/">Produkte</a>
+          <a href="/karriere/">Karriere</a>
+          <a href="/team/">Team</a>
+          <a href="/en/" class="lang-switch">EN</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hero -->
+      <section class="hero-section">
+        <div class="container">
+          <img src="/sylents-claim.svg" alt="sylents-claim" class="hero-claim" />
+          <h3>Der erste serienreife<br />elektrische<br />Jetantrieb</h3>
+        </div>
+      </section>
+
+      <!-- Partners — rotating carousel (unterstützt von) -->
+      <section class="partners-section">
+        <div class="container">
+          <p class="partners-label">unterstützt von</p>
+        </div>
+        <div class="partner-logos-wrapper">
+          <div class="partner-logos-track">
+            {[...partners, ...partners].map((p) => (
+              <div class="logo-slot">
+                <img src={p.src} alt={p.alt} loading="lazy" />
+              </div>
+            ))}
+          </div>
+          <div class="fade fade-left"></div>
+          <div class="fade fade-right"></div>
+        </div>
+      </section>
+
+      <!-- Intro -->
+      <section class="intro-section">
+        <div class="container intro-grid">
+          <div class="intro-text">
+            <span class="eyebrow">Elektrische Jetantriebe</span>
+            <h2>Leise. Kraftvoll. Emissionsfrei.</h2>
+            <p class="lead">Sylents entwickelt und produziert elektrische Wasserstrahlantriebe mit innenliegendem Elektromotor – wassergekühlt, blockierungsfrei und mit geschlossenem Impeller. Für langen Fahrspaß auf Seen und Küste.</p>
+            <ul class="intro-tags">
+              <li>Leise</li>
+              <li>Emissionsfrei</li>
+              <li>Blockierungsfrei</li>
+              <li>Wartungsarm</li>
+              <li>Sicher für Badende</li>
+            </ul>
+          </div>
+          <div class="intro-visual">
+            <img src="/outboard.png" alt="Sylents Außenboarder" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Benefits: jet experience -->
+      <section class="benefits-section">
+        <div class="container">
+          <div class="benefits-head">
+            <span class="eyebrow">Jet Experience</span>
+            <h2>Was Jets auszeichnet.</h2>
+            <p class="benefits-lead">Lange waren Jets eine Nischenlösung. Sylents macht sie zum Standard – für jedes Freizeitboot auf dem See.</p>
+          </div>
+          <div class="benefits-grid">
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00bcd4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v3"/><path d="M12 18v3"/><path d="M3 12h3"/><path d="M18 12h3"/><path d="m8.5 8.5 4 2.5 2.5 4-4-2.5z"/></svg>
+              </div>
+              <h3>Wendig & direkt</h3>
+              <p>Sofortiger Schub aus dem Stand und spielerisch leichtes Manövrieren – das typische Jet-Gefühl, das kein Propeller bietet.</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00bcd4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c1.5 0 1.5 1.5 3 1.5S6.5 18 8 18s1.5 1.5 3 1.5S12.5 18 14 18s1.5 1.5 3 1.5S18.5 18 20 18s1.5 1.5 3 1.5"/><circle cx="12" cy="7" r="3"/><path d="M5 21c0-3.9 3.1-7 7-7"/></svg>
+              </div>
+              <h3>Sicher in seichten Gewässern</h3>
+              <p>Keine äußeren beweglichen Teile – sicher für Badende. Und ideal für flache Ufer, Schilfzonen und Hafenbecken, wo Propeller versagen.</p>
+            </div>
+            <div class="benefit-card">
+              <div class="benefit-icon">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00bcd4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+              </div>
+              <h3>Seit Sylents: einfach & bezahlbar</h3>
+              <p>Einfaches Handling, einfache Installation – und eine kostengünstige Alternative zum Propeller.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="products-section">
+        <div class="container">
+          <h2>Unsere Produkte und Services</h2>
+          <div class="products-grid">
+            <div class="product-card">
+              <img src="/inboard.png" alt="inboard" />
+              <h3>inboard</h3>
+              <p>Integrierter Elektroantrieb für den festen Einbau – leise, wartungsarm, ideal für geschützte Gewässer.</p>
+              <p class="version"><strong>Leistung:</strong> 1–10 kW</p>
+              <a href="/produktseite/#inboard">Mehr erfahren...</a>
+            </div>
+            <div class="product-card">
+              <img src="/outboard.png" alt="outboard" />
+              <h3>outboard</h3>
+              <p>Der leichte Außenboarder – in Minuten montiert und von überall startklar.</p>
+              <p class="version"><strong>Leistung:</strong> 1,2–4,5 kW</p>
+              <a href="/produktseite/#outboard">Mehr erfahren...</a>
+            </div>
+            <div class="product-card">
+              <img src="/pod.png" alt="Pod" />
+              <h3>Pod</h3>
+              <p>Kompakter Pod-Antrieb für Segelboote und flache Gewässer – platzsparend mit komplettem Energiemanagement.</p>
+              <p class="version"><strong>Leistung:</strong> 1–10 kW</p>
+              <a href="/produktseite/">Mehr erfahren...</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="contact-section">
+        <div class="container contact-grid">
+          <div class="contact-info">
+            <h2>Noch Fragen?</h2>
+            <h3>Kontaktieren Sie uns -<br />Wir antworten bei allen Gezeiten</h3>
+            <p>Hinterlassen Sie Ihren Namen und Ihre Kontaktdaten – wir antworten innerhalb von 48 Stunden oder weniger.</p>
+            <p>Hans Waldherr, Co-Founder</p>
+            <p>Hilmar Unterrainer, Co-Founder</p>
+            <p>tel <a href="tel:+4976639317996">+49 7663 9317-996</a></p>
+            <p>email <a href="mailto:hi@sylents.de">hi@sylents.de</a></p>
+          </div>
+          <div class="contact-form">
+            <form>
+              <input type="text" name="name" placeholder="Name *" required />
+              <input type="email" name="email" placeholder="Email *" required />
+              <textarea name="message" placeholder="Message *" required></textarea>
+              <label class="consent">
+                <input type="checkbox" required />
+                <span>Ich akzeptiere die <a href="/datenschutzerklaerung/">Datenschutzbedingungen</a>*</span>
+              </label>
+              <button type="submit" class="btn">Senden</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-col footer-brand">
+          <img src="/sylents-2c_1.svg" alt="Sylents" class="footer-logo" />
+          <p class="footer-tagline">by VERVE Water Mobility GmbH</p>
+          <p class="footer-desc">powerful electric waterjets — the first jet for broad leisure use.</p>
+          <div class="footer-contact">
+            <a href="tel:+4976639317996">+49 7663 9317-996</a>
+            <a href="mailto:hi@sylents.de">hi@sylents.de</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Standorte</h4>
+          <p><strong>Firmensitz</strong><br />Carl-Benz-Str. 1<br />D-79331 Teningen</p>
+          <p><strong>Entwicklungsstandort</strong><br />A-7100 Neusiedl</p>
+        </div>
+        <div class="footer-col">
+          <h4>Rechtliches</h4>
+          <p>Amtsgericht Freiburg<br />HRB 719693</p>
+          <p><strong>UID</strong> DE323526109</p>
+          <p><strong>IBAN</strong> DE66 2003 0000 0020 2271 20</p>
+          <p><strong>BIC</strong> HYVEDEMM300</p>
+          <nav class="footer-legal">
+            <a href="/impressum/">Impressum</a>
+            <a href="/datenschutzerklaerung/">Datenschutz</a>
+            <a href="/agb/">AGB</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+          <span>© {new Date().getFullYear()} VERVE Water Mobility GmbH</span>
+          <span>Sylents — powerful electric waterjets</span>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Header: transparent at top, white on scroll (matches original WP/Elementor behavior)
+      const header = document.getElementById('siteHeader');
+      const onScroll = () => {
+        if (window.scrollY > 40) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    </script>
+  </body>
+</html>
+
+<style>
+/* === Header — transparent at top, white on scroll === */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 18px 0;
+  background: transparent;
+  transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+}
+.site-header.scrolled {
+  background: #ffffff;
+  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.08);
+}
+.header-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo { position: relative; display: inline-block; }
+.logo img { height: 37px; }
+.logo-light { display: block; }
+.logo-dark { display: none; }
+.site-header.scrolled .logo-light { display: none; }
+.site-header.scrolled .logo-dark { display: block; }
+.site-header nav { display: flex; gap: 2rem; align-items: center; }
+.site-header nav a {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.site-header nav a:hover { color: var(--color-primary); }
+.lang-switch { font-weight: 700; }
+/* scrolled state: dark text on white */
+.site-header.scrolled nav a,
+.site-header.scrolled nav a:hover { color: #333333; }
+.site-header.scrolled nav a:hover { color: var(--color-primary); }
+
+/* === Hero (dark image, white text — transparent header reads against it) === */
+.hero-section {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-image:
+    linear-gradient(rgba(0, 90, 120, 0.3), rgba(0, 50, 70, 0.4)),
+    url('/kajak.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 120px 0 40px;
+}
+.hero-claim { max-width: 350px; margin: 0 auto 2rem; }
+.hero-section h3 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 300;
+  line-height: 1.22;
+  color: #ffffff;
+  letter-spacing: normal;
+}
+
+/* === Intro (two-column) === */
+.intro-section {
+  padding: 80px 0;
+}
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.intro-text { text-align: left; }
+.intro-text .eyebrow { margin-bottom: 0.75rem; }
+.intro-text h2 {
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+.intro-text .lead {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #444444;
+  max-width: 520px;
+  margin-bottom: 1.75rem;
+}
+.intro-tags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.intro-tags li {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+  background: rgba(0, 188, 212, 0.1);
+  border: 1px solid rgba(0, 188, 212, 0.25);
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+}
+.intro-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #f1f7f9, #e3eef1);
+  border-radius: 20px;
+  padding: 2.5rem;
+  min-height: 380px;
+}
+.intro-visual img {
+  max-height: 360px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 40px rgba(0, 60, 80, 0.18));
+}
+@media (max-width: 800px) {
+  .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .intro-visual { min-height: 280px; padding: 1.5rem; }
+}
+
+/* legacy intro helpers removed */
+.intro-section .section-logo { display: none; }
+.intro-section .footnote { display: none; }
+
+/* === Feature band (patented impeller) === */
+.feature-band {
+  padding: 56px 0;
+  background: linear-gradient(135deg, #0d1f24, #14323a);
+  color: #ffffff;
+}
+.feature-inner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 920px;
+}
+.feature-mark {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 188, 212, 0.12);
+  border: 1px solid rgba(0, 188, 212, 0.3);
+  border-radius: 16px;
+}
+.feature-band h2 {
+  color: #ffffff;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  margin-bottom: 0.5rem;
+}
+.feature-band p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.feature-band p strong { color: var(--color-primary); }
+@media (max-width: 640px) {
+  .feature-inner { flex-direction: column; text-align: center; }
+}
+
+/* === Benefits === */
+.benefits-section {
+  padding: 64px 0;
+  background: #ffffff;
+}
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+.benefits-head {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.benefits-head h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+.benefits-lead {
+  max-width: 620px;
+  margin: 1rem auto 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #555555;
+}
+.benefit-card {
+  text-align: left;
+  padding: 1.75rem;
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.benefit-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 24px -10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
+}
+.benefit-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 188, 212, 0.1);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+.benefit-card h3 {
+  font-size: 1.1rem;
+  color: #333333;
+  margin-bottom: 0.4rem;
+}
+.benefit-card p {
+  font-size: 0.92rem;
+  color: #666666;
+  line-height: 1.55;
+}
+@media (max-width: 800px) {
+  .benefits-grid { grid-template-columns: 1fr; }
+}
+
+/* === Products (light alt bg) === */
+.products-section {
+  padding: 80px 0;
+  text-align: center;
+  background: var(--color-bg-alt);
+}
+.products-section h2 {
+  margin-bottom: 3rem;
+}
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  text-align: left;
+}
+.product-card {
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.product-card:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+.product-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+.product-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-primary);
+  text-transform: lowercase;
+}
+.product-card p {
+  margin-bottom: 0.75rem;
+  color: #333333;
+}
+.product-card .version { font-size: 0.9rem; color: #666666; }
+.product-card a {
+  color: var(--color-primary-dark);
+  font-weight: 500;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+.product-card a:hover { color: var(--color-primary); }
+
+/* === Contact (dark shore image + blue filter, white text) === */
+.contact-section {
+  padding: 80px 0;
+  background:
+    linear-gradient(rgba(0, 90, 120, 0.7), rgba(0, 50, 70, 0.8)),
+    url('/shore.jpg') center top / cover no-repeat;
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.contact-info h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+.contact-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  line-height: 1.4;
+}
+.contact-info p {
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+}
+.contact-info a { color: var(--color-primary); }
+.contact-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.contact-form input,
+.contact-form textarea {
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-bottom: 1px solid #cccccc;
+  border-radius: 0;
+  padding: 0.85rem 0.5rem;
+  color: #6b6b6b;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: #999999; }
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-bottom-color: var(--color-primary);
+}
+.contact-form textarea { min-height: 120px; resize: vertical; }
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #ffffff;
+}
+.consent input { margin-top: 0.2rem; }
+.consent a { color: var(--color-primary); }
+.contact-form .btn {
+  align-self: flex-start;
+}
+
+/* === Partners — rotating carousel === */
+.partners-section {
+  padding: 24px 0 40px;
+  text-align: center;
+  background: var(--color-bg-alt);
+  overflow: hidden;
+}
+.partners-label {
+  color: #666666;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+.partner-logos-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+.partner-logos-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: partner-scroll 32s linear infinite;
+}
+@keyframes partner-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-50% - 0.75rem)); }
+}
+.logo-slot {
+  flex-shrink: 0;
+  width: 120px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #ececec;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.logo-slot img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: filter 0.25s ease, opacity 0.25s ease;
+}
+.logo-slot:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 6px 18px -8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+.logo-slot:hover img {
+  filter: grayscale(0%);
+  opacity: 1;
+}
+.fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  pointer-events: none;
+  z-index: 1;
+}
+.fade-left {
+  left: 0;
+  background: linear-gradient(to right, var(--color-bg-alt), transparent);
+}
+.fade-right {
+  right: 0;
+  background: linear-gradient(to left, var(--color-bg-alt), transparent);
+}
+@media (max-width: 768px) {
+  .logo-slot { width: 100px; height: 52px; }
+  .partner-logos-track { animation-duration: 22s; }
+}
+
+/* === Footer === */
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  background: #0d1f24;
+  color: #c8d6da;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 3rem;
+  padding: 64px 15px 48px;
+}
+.footer-brand { display: flex; flex-direction: column; gap: 0.5rem; }
+.footer-logo { width: 116px; height: 34px; margin: 0 0 0.75rem; filter: brightness(0) invert(1); }
+.footer-tagline { color: #00bcd4; font-weight: 500; font-size: 0.9rem; }
+.footer-desc { color: #7d9298; font-size: 0.85rem; line-height: 1.6; max-width: 280px; margin-bottom: 0.75rem; }
+.footer-contact { display: flex; flex-direction: column; gap: 0.35rem; }
+.footer-contact a { color: #ffffff; font-size: 0.9rem; }
+.footer-contact a:hover { color: var(--color-primary); }
+.footer-col h4 {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #00bcd4;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+.footer-col p {
+  margin-bottom: 0.85rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #c8d6da;
+}
+.footer-col p strong { color: #ffffff; }
+.footer-legal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.footer-legal a { color: #c8d6da; font-size: 0.88rem; }
+.footer-legal a:hover { color: var(--color-primary); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 18px 0;
+}
+.footer-bottom-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: #7d9298;
+}
+@media (max-width: 800px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; padding: 48px 15px 32px; }
+  .footer-bottom-inner { flex-direction: column; gap: 0.4rem; }
+}
+
+/* === Responsive === */
+@media (max-width: 900px) {
+  .products-grid { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .footer-meta { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .site-header nav { gap: 1rem; }
+  .site-header nav a { font-size: 0.85rem; }
+}
+</style>
