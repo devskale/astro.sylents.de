@@ -54,7 +54,7 @@ const partners = [
       <section class="hero-section">
         <div class="container">
           <img src="/sylents-claim.svg" alt="sylents-claim" class="hero-claim" />
-          <h3>Der erste serienreife<br />elektrische<br />Jetantrieb</h3>
+          <h3>Jet-Fahrspaß auf Seen.</h3>
         </div>
       </section>
 
@@ -122,10 +122,10 @@ const partners = [
             </div>
             <div class="benefit-card">
               <div class="benefit-icon">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00bcd4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg>
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#00bcd4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
               </div>
-              <h3>Seit Sylents: einfach & bezahlbar</h3>
-              <p>Einfaches Handling, einfache Installation – und eine kostengünstige Alternative zum Propeller.</p>
+              <h3>Verfügbar als Außen-, Innenborder & Pod</h3>
+              <p>Seit Sylents gibt es den passenden Jetantrieb für jedes Freizeitboot auf dem See.</p>
             </div>
           </div>
         </div>
@@ -286,16 +286,16 @@ const partners = [
 .hero-section {
   min-height: 80vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   text-align: center;
   position: relative;
   background-image:
-    linear-gradient(rgba(0, 90, 120, 0.3), rgba(0, 50, 70, 0.4)),
+    linear-gradient(rgba(0, 90, 120, 0.3), rgba(0, 50, 70, 0.55)),
     url('/kajak.jpg');
   background-size: cover;
   background-position: center;
-  padding: 120px 0 40px;
+  padding: 130px 0 80px;
 }
 .hero-section::after {
   content: '';
@@ -308,11 +308,12 @@ const partners = [
 .hero-claim { max-width: 350px; margin: 0 auto 2rem; }
 .hero-section h3 {
   font-family: 'Montserrat', sans-serif;
-  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 300;
   line-height: 1.22;
   color: #ffffff;
   letter-spacing: normal;
+  text-shadow: 0 2px 24px rgba(0, 30, 40, 0.5);
 }
 
 /* === Intro (two-column) === */
@@ -420,7 +421,7 @@ const partners = [
 
 /* === Benefits === */
 .benefits-section {
-  padding: 64px 0;
+  padding: 80px 0;
   background: #ffffff;
 }
 .benefits-grid {
