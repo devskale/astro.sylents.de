@@ -1,0 +1,263 @@
+---
+import '../styles/tokens.css';
+import { getLangFromUrl, useTranslations, altLangPath } from '../i18n/utils';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: Lang;
+}
+
+const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const {
+  title,
+  description = lang === 'en'
+    ? 'Sylents – electric jet drives for leisure boats. Silent, emission-free, blockage-free.'
+    : 'Sylents – elektrische Jetantriebe für Freizeitboote. Leise, emissionsfrei, blockierungsfrei.',
+} = Astro.props;
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const canonical = new URL(Astro.url.pathname, site).toString().replace(/\/$/, '');
+const nav = [
+  { href: lang === 'en' ? '/en/' : '/', label: t('nav.home') },
+  { href: lang === 'en' ? '/en/products/' : '/produktseite/', label: t('nav.products') },
+  { href: lang === 'en' ? '/en/career/' : '/karriere/', label: t('nav.career') },
+  { href: lang === 'en' ? '/en/team/' : '/team/', label: t('nav.team') },
+];
+const switchTo = altLangPath(Astro.url);
+const switchLabel = switchTo.lang === 'en' ? 'EN' : 'DE';
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Sylents" />
+  </head>
+  <body>
+    <!-- Header — transparent over page-hero, white on scroll -->
+    <header class="site-header" id="siteHeader">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="/sylents-2c_1-light.svg" alt="Sylents" class="logo-light" />
+          <img src="/sylents-2c_1.svg" alt="Sylents" class="logo-dark" />
+        </a>
+        <nav>
+          {nav.map((item) => (
+            <a href={item.href} class={Astro.url.pathname === item.href ? 'active' : ''}>{item.label}</a>
+          ))}
+          <a href={switchTo.path} class="lang-switch">{switchLabel}</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-col footer-brand">
+          <img src="/sylents-2c_1.svg" alt="Sylents" class="footer-logo" />
+          <p class="footer-tagline">{t('footer.tagline')}</p>
+          <p class="footer-desc">{t('footer.desc')}</p>
+          <div class="footer-contact">
+            <a href="tel:+4976639317996">+49 7663 9317-996</a>
+            <a href="mailto:hi@sylents.de">hi@sylents.de</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>{t('footer.locations')}</h4>
+          <p><strong>{t('footer.hq')}</strong><br />Carl-Benz-Str. 1<br />D-79331 Teningen</p>
+          <p><strong>{t('footer.dev')}</strong><br />A-7100 Neusiedl</p>
+        </div>
+        <div class="footer-col">
+          <h4>{t('footer.legal')}</h4>
+          <p>Amtsgericht Freiburg<br />HRB 719693</p>
+          <p><strong>UID</strong> DE323526109</p>
+          <p><strong>IBAN</strong> DE66 2003 0000 0020 2271 20</p>
+          <p><strong>BIC</strong> HYVEDEMM300</p>
+          <nav class="footer-legal">
+            <a href={lang === 'en' ? '/en/imprint/' : '/impressum/'}>{t('footer.imprint')}</a>
+            <a href={lang === 'en' ? '/en/privacy/' : '/datenschutz/'}>{t('footer.privacy')}</a>
+            <a href={lang === 'en' ? '/en/terms/' : '/agb/'}>{t('footer.terms')}</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="container footer-bottom-inner">
+          <span>© {new Date().getFullYear()} VERVE Water Mobility GmbH</span>
+          <span>Sylents — powerful electric waterjets</span>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline>
+      const header = document.getElementById('siteHeader');
+      const onScroll = () => {
+        if (window.scrollY > 40) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    </script>
+
+    <style is:global>
+      /* Header — transparent at top, white on scroll */
+      .site-header {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 100;
+        padding: 18px 0;
+        background: transparent;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+      }
+      .site-header.scrolled {
+        background: #ffffff;
+        box-shadow: 0 1px 12px rgba(0, 0, 0, 0.08);
+      }
+      .header-inner {
+        max-width: 1140px;
+        margin: 0 auto;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo { position: relative; display: inline-block; }
+      .logo img { height: 37px; }
+      .logo-light { display: block; }
+      .logo-dark { display: none; }
+      .site-header.scrolled .logo-light { display: none; }
+      .site-header.scrolled .logo-dark { display: block; }
+      .site-header nav { display: flex; gap: 2rem; align-items: center; }
+      .site-header nav a {
+        color: #ffffff;
+        font-size: 0.95rem;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+      .site-header nav a:hover,
+      .site-header nav a.active { color: var(--color-primary); }
+      .lang-switch { font-weight: 700; }
+      .site-header.scrolled nav a { color: #333333; }
+      .site-header.scrolled nav a:hover,
+      .site-header.scrolled nav a.active { color: var(--color-primary); }
+      @media (max-width: 600px) {
+        .site-header nav { gap: 1rem; }
+        .site-header nav a { font-size: 0.85rem; }
+      }
+
+      /* Page hero band (subsites) — gives transparent header a dark backdrop */
+      .page-hero {
+        position: relative;
+        padding: 150px 0 70px;
+        text-align: center;
+        background-image:
+          linear-gradient(rgba(0, 90, 120, 0.55), rgba(0, 50, 70, 0.78)),
+          url('/shore.jpg');
+        background-size: cover;
+        background-position: center;
+        overflow: hidden;
+      }
+      .page-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 0%, rgba(0, 188, 212, 0.18), transparent 55%);
+        pointer-events: none;
+      }
+      .page-hero .container { position: relative; z-index: 1; }
+      .page-hero h1 {
+        color: #ffffff;
+        font-size: clamp(2rem, 5vw, 3rem);
+        margin-bottom: 0.75rem;
+      }
+      .page-hero p {
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 1.1rem;
+        max-width: 640px;
+        margin: 0 auto;
+      }
+      .breadcrumb {
+        display: inline-block;
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--color-primary);
+        margin-bottom: 1rem;
+      }
+
+      /* Generic content prose for legal/text pages */
+      .prose {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 80px 15px;
+      }
+      .prose h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 1.5rem; color: var(--color-primary-dark); }
+      .prose h2 { font-size: 1.4rem; margin: 2rem 0 0.75rem; color: var(--color-primary-dark); }
+      .prose h3 { font-size: 1.1rem; margin: 1.5rem 0 0.5rem; color: #333; }
+      .prose p { margin-bottom: 1rem; line-height: 1.8; color: #444; }
+      .prose strong { color: #222; }
+      .prose a { color: var(--color-primary-dark); }
+
+      /* Footer */
+      .site-footer {
+        margin-top: auto;
+        border-top: 1px solid var(--color-border);
+        background: #0d1f24;
+        color: #c8d6da;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr;
+        gap: 3rem;
+        padding: 64px 15px 48px;
+      }
+      .footer-brand { display: flex; flex-direction: column; gap: 0.5rem; }
+      .footer-logo { width: 116px; height: 34px; margin: 0 0 0.75rem; filter: brightness(0) invert(1); }
+      .footer-tagline { color: #00bcd4; font-weight: 500; font-size: 0.9rem; }
+      .footer-desc { color: #7d9298; font-size: 0.85rem; line-height: 1.6; max-width: 280px; margin-bottom: 0.75rem; }
+      .footer-contact { display: flex; flex-direction: column; gap: 0.35rem; }
+      .footer-contact a { color: #ffffff; font-size: 0.9rem; }
+      .footer-contact a:hover { color: var(--color-primary); }
+      .footer-col h4 {
+        font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+        color: #00bcd4; margin-bottom: 1rem; font-weight: 600;
+      }
+      .footer-col p { margin-bottom: 0.85rem; font-size: 0.88rem; line-height: 1.6; color: #c8d6da; }
+      .footer-col p strong { color: #ffffff; }
+      .footer-legal { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
+      .footer-legal a { color: #c8d6da; font-size: 0.88rem; }
+      .footer-legal a:hover { color: var(--color-primary); }
+      .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding: 18px 0; }
+      .footer-bottom-inner {
+        max-width: 1140px; margin: 0 auto; padding: 0 15px;
+        display: flex; justify-content: space-between; align-items: center;
+        font-size: 0.82rem; color: #7d9298;
+      }
+      @media (max-width: 800px) {
+        .footer-grid { grid-template-columns: 1fr; gap: 2rem; padding: 48px 15px 32px; }
+        .footer-bottom-inner { flex-direction: column; gap: 0.4rem; }
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import '../../styles/tokens.css';
+
+const products = [
+  { id: 'outboard', name: 'Sylents outboard', tag: 'Light. Mobile. Ready in minutes.', power: '1.2–4.5 kW', img: '/outboard.png',
+    points: ['Just 14.6 kg incl. battery – fits any roof and transom','Closed jet drive: no propeller, no injury risk','Up to 50 minutes of riding under full load','Blockage-free through reeds, sand and shallow shores'] },
+  { id: 'inboard', name: 'Sylents inboard', tag: 'Integrated. Low-maintenance. For sheltered waters.', power: '1–10 kW', img: '/inboard.png',
+    points: ['Integrated, water-cooled electric drive up to 5,000 rpm','Coordinated overall system with a safety concept','All components matched and waterproof','An economical alternative for intensive use'] },
+  { id: 'pod', name: 'Sylents pod drive', tag: 'Compact. Space-saving. For shallow waters.', power: '1–10 kW', img: '/pod.png',
+    points: ['Lightweight, space-saving pod drive for sailboats, houseboats and yachts','Complete energy management from a single source','Ideal for shallow waters, reed beds and harbours','Closed, indestructible drive system'] },
+];
+---
+
+<SiteLayout lang="en" title="Products | Sylents" description="Electric jet drives as outboard, inboard and pod – a matching jet for every leisure boat.">
+  <section class="page-hero"><div class="container">
+    <span class="breadcrumb">Products</span>
+    <h1>Electric jet drives</h1>
+    <p>One drive principle, three forms – the right jet for every leisure boat: as an outboard, inboard or pod drive.</p>
+  </div></section>
+
+  <section class="why-jet"><div class="container"><div class="why-grid">
+    <div>
+      <span class="eyebrow">Why a jet?</span>
+      <h2>Why a jet drive?</h2>
+      <p>Jet drives have no external propeller – they are safe for swimmers, run through reeds and shallow shores, and operate pleasantly quietly. Sylents makes these advantages accessible to the broad leisure-boating segment for the first time: easy to install, robust in operation and a genuine alternative to the propeller.</p>
+    </div>
+    <ul class="why-points">
+      <li><strong>Safe</strong> – no external moving parts, no injury risk</li>
+      <li><strong>Blockage-free</strong> – runs through reeds, sand and shallow shores</li>
+      <li><strong>Quiet</strong> – low-noise electric drive, emission-free</li>
+      <li><strong>Low-maintenance</strong> – no oil, no winterisation</li>
+    </ul>
+  </div></div></section>
+
+  {products.map((p, i) => (
+    <section id={p.id} class="product-detail" data-reverse={i % 2 === 1}><div class="container detail-grid">
+      <div class="detail-visual"><img src={p.img} alt={p.name} /></div>
+      <div class="detail-body">
+        <span class="detail-tag">{p.tag}</span>
+        <h2>{p.name}</h2>
+        <div class="detail-power"><strong>{p.power}</strong> power</div>
+        <ul class="detail-points">{p.points.map((pt) => <li>{pt}</li>)}</ul>
+        <a href="/en/#contact" class="btn">Request info</a>
+      </div>
+    </div></section>
+  ))}
+</SiteLayout>
+
+<style>
+.why-jet { padding: 80px 0; background: var(--color-bg-alt); }
+.why-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 4rem; align-items: center; }
+.why-jet h2 { font-size: clamp(1.6rem,3vw,2.2rem); margin-bottom: 1rem; }
+.why-jet p { color: #444; line-height: 1.8; font-size: 1.05rem; }
+.why-points { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+.why-points li { background: #fff; border: 1px solid rgba(13,31,36,0.06); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); padding: 1rem 1.25rem; color: #444; font-size: 0.95rem; }
+.why-points li strong { color: var(--color-primary-dark); }
+.product-detail { padding: 80px 0; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 4rem; align-items: center; }
+.product-detail[data-reverse="true"] .detail-grid { direction: rtl; }
+.product-detail[data-reverse="true"] .detail-grid > * { direction: ltr; }
+.detail-visual { background-image: linear-gradient(160deg,#f1f7f9,#dbeaee); border: 1px solid rgba(0,188,212,0.12); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 2.5rem; min-height: 340px; display: flex; align-items: center; justify-content: center; }
+.detail-visual img { max-height: 320px; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0,60,80,0.18)); }
+.detail-tag { display: inline-block; color: var(--color-primary); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; }
+.detail-body h2 { font-size: clamp(1.6rem,3vw,2.2rem); color: var(--color-primary-dark); margin-bottom: 0.75rem; }
+.detail-power { display: inline-flex; align-items: baseline; gap: 0.4rem; background: rgba(0,188,212,0.1); border: 1px solid rgba(0,188,212,0.25); border-radius: var(--radius-pill); padding: 0.4rem 1rem; font-size: 0.9rem; color: #555; margin-bottom: 1.5rem; }
+.detail-power strong { color: var(--color-primary-dark); font-size: 1.05rem; }
+.detail-points { list-style: none; margin: 0 0 1.75rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.detail-points li { position: relative; padding-left: 1.6rem; color: #444; line-height: 1.6; font-size: 0.98rem; }
+.detail-points li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); }
+@media (max-width: 800px) { .why-grid, .detail-grid { grid-template-columns: 1fr; gap: 2rem; } .product-detail[data-reverse="true"] .detail-grid { direction: ltr; } }
+</style>

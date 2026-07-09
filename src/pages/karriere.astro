@@ -1,0 +1,130 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import '../styles/tokens.css';
+
+const perks = [
+  {
+    title: 'Sinnstiftend',
+    desc: 'Du arbeitest an emissionsfreier Mobilität auf dem Wasser – mit echtem Effekt für Natur und Menschen.',
+    icon: '<path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/><path d="M12 9c2 2 4 2 4 2"/>'
+  },
+  {
+    title: 'Hands-on & direkt',
+    desc: 'Kurze Entscheidungswege, flache Hierarchien: das beste Argument zählt, nicht, wer es vorträgt.',
+    icon: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2-2 2.5-2.5z"/>'
+  },
+  {
+    title: 'Wachstum',
+    desc: 'Ein junger Scale-up am Übergang vom Prototyp zur Serie – mit viel Raum für Eigenverantwortung.',
+    icon: '<path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/>'
+  },
+  {
+    title: 'Starkes Team',
+    desc: 'Spezialisten aus Elektromobilität, Hydrodynamik und Embedded Systems, die voneinander lernen.',
+    icon: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 11a3 3 0 0 0 0-6"/><path d="M15 15c3 0 5.5 2 5.5 5"/>'
+  },
+];
+---
+
+<SiteLayout title="Karriere | Sylents" description="Karriere bei Sylents – arbeite an emissionsfreien Jetantrieben für Freizeitboote.">
+  <section class="page-hero">
+    <div class="container">
+      <span class="breadcrumb">Karriere</span>
+      <h1>Gestalte die Mobilität auf dem Wasser mit.</h1>
+      <p>Wir entwickeln elektrische Jetantriebe für Freizeitboote und wachsen. Wenn du an emissionsfreier Technologie arbeiten willst, die wirklich bewegt – dann passe zu uns.</p>
+    </div>
+  </section>
+
+  <!-- Perks -->
+  <section class="perks">
+    <div class="container">
+      <span class="eyebrow">Warum Sylents</span>
+      <h2>Was dich erwartet.</h2>
+      <div class="perks-grid">
+        {perks.map((p) => (
+          <div class="perk-card">
+            <div class="perk-icon">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#00bcd4" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" set:html={p.icon} />
+            </div>
+            <h3>{p.title}</h3>
+            <p>{p.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Open positions -->
+  <section class="jobs">
+    <div class="container">
+      <span class="eyebrow">Offene Stellen</span>
+      <h2>Aktuelle Möglichkeiten.</h2>
+      <div class="jobs-list">
+        <a href="mailto:hi@sylents.de?subject=Bewerbung%20CFD" class="job-row">
+          <div>
+            <h3>Entwicklungsingenieur CFD (m/w/d)</h3>
+            <p>Werkstudent / Abschlussarbeit · Teningen oder remote</p>
+          </div>
+          <span class="job-arrow">→</span>
+        </a>
+        <a href="mailto:hi@sylents.de?subject=Bewerbung%20Technische%20Assistenz" class="job-row">
+          <div>
+            <h3>Technische Assistenz (m/w/d)</h3>
+            <p>Vollzeit · Teningen</p>
+          </div>
+          <span class="job-arrow">→</span>
+        </a>
+        <a href="mailto:hi@sylents.de?subject=Initiativbewerbung" class="job-row">
+          <div>
+            <h3>Initiativbewerbung</h3>
+            <p>Du passt in kein Raster? Erzähl uns, was du beitragen kannst.</p>
+          </div>
+          <span class="job-arrow">→</span>
+        </a>
+      </div>
+      <p class="jobs-note">Wir freuen uns auf deine Bewerbung an <a href="mailto:hi@sylents.de">hi@sylents.de</a>.</p>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+.perks { padding: 80px 0; background: var(--color-bg-alt); }
+.perks h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 2.5rem; }
+.perks-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+.perk-card {
+  background: #fff; border: 1px solid rgba(13,31,36,0.06); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm); padding: 1.75rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.perk-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); }
+.perk-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(135deg, rgba(0, 188, 212, 0.14), rgba(0, 188, 212, 0.04));
+  border: 1px solid rgba(0, 188, 212, 0.18);
+  border-radius: 14px;
+  margin-bottom: 1.1rem;
+}
+.perk-card h3 { font-size: 1.1rem; color: var(--color-primary-dark); margin-bottom: 0.4rem; }
+.perk-card p { color: #666; font-size: 0.9rem; line-height: 1.55; }
+
+.jobs { padding: 80px 0; }
+.jobs h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 2rem; }
+.jobs-list { display: flex; flex-direction: column; gap: 1rem; }
+.job-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  background: #fff; border: 1px solid rgba(13,31,36,0.08); border-radius: var(--radius-md);
+  padding: 1.4rem 1.6rem; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.job-row:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: rgba(0,188,212,0.4); }
+.job-row h3 { font-size: 1.1rem; color: #1a3c44; margin-bottom: 0.2rem; }
+.job-row p { color: #777; font-size: 0.9rem; }
+.job-arrow { color: var(--color-primary); font-size: 1.4rem; font-weight: 600; }
+.jobs-note { margin-top: 2rem; color: #555; }
+.jobs-note a { color: var(--color-primary-dark); }
+@media (max-width: 900px) { .perks-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .perks-grid { grid-template-columns: 1fr; } }
+</style>
