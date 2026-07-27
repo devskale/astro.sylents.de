@@ -25,6 +25,7 @@ const nav = [
   { href: lang === 'en' ? '/en/products/' : '/produktseite/', label: t('nav.products') },
   { href: lang === 'en' ? '/en/career/' : '/karriere/', label: t('nav.career') },
   { href: lang === 'en' ? '/en/team/' : '/team/', label: t('nav.team') },
+  { href: 'https://www.sylents.de/shop/', label: t('nav.shop') },
 ];
 const switchTo = altLangPath(Astro.url);
 const switchLabel = switchTo.lang === 'en' ? 'EN' : 'DE';
@@ -87,7 +88,6 @@ const switchLabel = switchTo.lang === 'en' ? 'EN' : 'DE';
         <div class="footer-col">
           <h4>{t('footer.locations')}</h4>
           <p><strong>{t('footer.hq')}</strong><br />Carl-Benz-Str. 1<br />D-79331 Teningen</p>
-          <p><strong>{t('footer.dev')}</strong><br />A-7100 Neusiedl</p>
         </div>
         <div class="footer-col">
           <h4>{t('footer.legal')}</h4>
