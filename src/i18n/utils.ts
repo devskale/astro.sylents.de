@@ -43,5 +43,5 @@ export function altLangPath(url: URL): { lang: Lang; path: string } {
   const deSeg = slugMapReverse[seg] ?? seg;
   const rest = pathname.split('/').slice(3).join('/');
   const dePath = (deSeg ? '/' + deSeg : '') + (rest ? '/' + rest : '');
-  return { lang: 'de', path: (dePath || '/') + (dePath.endsWith('/') ? '' : '/') };
+  return { lang: 'de', path: dePath ? dePath + '/' : '/' };
 }
