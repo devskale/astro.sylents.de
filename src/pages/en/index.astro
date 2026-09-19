@@ -31,8 +31,8 @@ const benefits = [
 ];
 
 const products = [
-  { img: '/inboard.png', alt: 'inboard', name: 'inboard', desc: 'Integrated electric drive for permanent installation – quiet, low-maintenance, ideal for sheltered waters.', power: '1–10 kW', href: '/en/products/#inboard' },
-  { img: '/outboard.png', alt: 'outboard', name: 'outboard', desc: 'The lightweight outboard – mounted in minutes and ready to launch from anywhere.', power: '1.2–4.5 kW', href: '/en/products/#outboard' },
+  { img: '/inboard.png', alt: 'Inboard', name: 'Inboard', desc: 'Integrated electric drive for permanent installation – quiet, low-maintenance, ideal for sheltered waters.', power: '1–10 kW', href: '/en/products/#inboard' },
+  { img: '/outboard.png', alt: 'Outboard', name: 'Outboard', desc: 'The lightweight outboard – mounted in minutes and ready to launch from anywhere.', power: '1.0–4.5 kW', href: '/en/products/#outboard' },
   { img: '/pod.png', alt: 'Pod', name: 'Pod', desc: 'Compact pod drive for sailboats and shallow waters – space-saving with complete energy management.', power: '1–10 kW', href: '/en/products/' },
 ];
 ---
@@ -40,6 +40,10 @@ const products = [
 <SiteLayout lang="en" title="Sylents — Electric jet drives for leisure boats" description="Electric jet drives for leisure boats – silent, emission-free, blockage-free. Available as outboard, inboard and pod.">
   <!-- Hero -->
   <section class="hero-section">
+    <div class="hero-video-wrap" id="heroVideoWrap" aria-hidden="true">
+      <div class="hero-video-media"><div id="heroVideo"></div></div>
+      <div class="hero-video-overlay"></div>
+    </div>
     <div class="container">
       <img src="/sylents-claim.svg" alt="sylents-claim" class="hero-claim" />
       <h3>Jet fun on the lakes.</h3>
@@ -71,7 +75,7 @@ const products = [
           <li>Silent</li><li>Emission-free</li><li>Blockage-free</li><li>Low-maintenance</li><li>Safe for swimmers</li>
         </ul>
       </div>
-      <div class="intro-visual"><img src="/outboard.png" alt="Sylents outboard" /></div>
+      <div class="intro-visual"><img src="/products/outboard/frontal.png" alt="Sylents outboard SY3.1" /></div>
     </div>
   </section>
 
@@ -128,10 +132,15 @@ const products = [
         <p>email <a href="mailto:hi@sylents.de">hi@sylents.de</a></p>
       </div>
       <div class="contact-form">
-        <form>
+        <!-- all-inkl Formmail; honeypot field against simple bot spam (must stay empty) -->
+        <form action="/system-cgi/formmail.pl" method="post">
+          <input type="hidden" name="recipient" value="hi@sylents.de" />
+          <input type="hidden" name="subject" value="Contact request via sylents.de (EN)" />
+          <input type="hidden" name="redirect" value="https://www.sylents.de/danke/" />
           <input type="text" name="name" placeholder="Name *" required />
           <input type="email" name="email" placeholder="Email *" required />
           <textarea name="message" placeholder="Message *" required></textarea>
+          <input type="text" name="fax" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <label class="consent">
             <input type="checkbox" required />
             <span>I accept the <a href="/en/privacy/">privacy policy</a>*</span>
@@ -143,11 +152,77 @@ const products = [
   </section>
 </SiteLayout>
 
+<script is:inline define:vars={{ heroVideoId: 'UUnTM2u_i5o' }}>
+  // Hero: static image first (fast LCP), then fade into muted looping YouTube video.
+  const heroWrap = document.getElementById('heroVideoWrap');
+  let heroPlayer = null;
+  let videoStarted = false;
+
+  function getCoverSize() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const aspect = 16 / 9;
+    if (vw / vh > aspect) return { w: vw, h: vw / aspect };
+    return { w: vh * aspect, h: vh };
+  }
+
+  function resizeHeroPlayer() {
+    if (!heroPlayer || !heroPlayer.setSize) return;
+    const { w, h } = getCoverSize();
+    heroPlayer.setSize(Math.round(w), Math.round(h));
+  }
+  window.addEventListener('resize', resizeHeroPlayer);
+
+  function fadeInVideo() {
+    if (!heroWrap || videoStarted) return;
+    videoStarted = true;
+    heroWrap.classList.add('is-visible');
+    heroWrap.closest('.hero-section')?.classList.add('video-active');
+  }
+
+  window.onYouTubeIframeAPIReady = function () {
+    if (!heroWrap) return;
+    const { w, h } = getCoverSize();
+    heroPlayer = new YT.Player('heroVideo', {
+      videoId: heroVideoId,
+      width: Math.round(w),
+      height: Math.round(h),
+      playerVars: {
+        autoplay: 1, loop: 1, playlist: heroVideoId, controls: 0,
+        modestbranding: 1, rel: 0, fs: 0, disablekb: 1, playsinline: 1, iv_load_policy: 3,
+      },
+      events: {
+        onReady: (e) => { e.target.mute(); e.target.playVideo(); e.target.setPlaybackQuality('hd720'); },
+        onStateChange: (e) => {
+          if (e.data === YT.PlayerState.PLAYING) {
+            e.target.setPlaybackQuality('hd720');
+            fadeInVideo();
+          } else if (e.data === YT.PlayerState.ENDED) {
+            e.target.playVideo();
+          }
+        },
+      },
+    });
+  };
+
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+</script>
+
 <style>
 .hero-section { min-height: 80vh; display: flex; align-items: flex-start; justify-content: center; text-align: center; position: relative;
   background-image: linear-gradient(rgba(0,90,120,0.3), rgba(0,50,70,0.55)), url('/kajak.jpg'); background-size: cover; background-position: center; padding: 130px 0 80px; }
 .hero-section::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, rgba(0,188,212,0.18), transparent 55%); pointer-events: none; }
 .hero-section .container { position: relative; z-index: 1; }
+.hero-video-wrap { position: absolute; inset: 0; overflow: hidden; opacity: 0; transition: opacity 1.2s ease; pointer-events: none; }
+.hero-video-wrap.is-visible { opacity: 1; }
+.hero-video-media { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.hero-video-wrap > div { width: 100%; height: 100%; }
+.hero-video-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(0,188,212,0.10), rgba(13,31,36,0.45)); pointer-events: none; }
+.hero-section .container { position: relative; z-index: 1; transition: transform 1.2s ease; }
+.hero-section.video-active .container { transform: translateY(24vh); }
+@media (prefers-reduced-motion: reduce) { .hero-video-wrap { display: none; } }
 .hero-claim { max-width: 350px; margin: 0 auto 2rem; }
 .hero-section h3 { font-family: 'Montserrat', sans-serif; font-size: clamp(1.6rem,4vw,2.4rem); font-weight: 300; line-height: 1.22; color: #fff; text-shadow: 0 2px 24px rgba(0,30,40,0.5); }
 
@@ -189,7 +264,7 @@ const products = [
 .product-card { background: #fff; border: 1px solid rgba(13,31,36,0.06); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow-md); transition: transform 0.25s, box-shadow 0.25s; }
 .product-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); }
 .product-card img { width: 100%; height: 200px; object-fit: contain; border-radius: var(--radius-md); background-image: linear-gradient(160deg,#f3f8fa,#e6f0f3); margin-bottom: 1.5rem; }
-.product-card h3 { font-size: 1.3rem; color: var(--color-primary); text-transform: lowercase; margin-bottom: 0.75rem; }
+.product-card h3 { font-size: 1.3rem; color: var(--color-primary); margin-bottom: 0.75rem; }
 .product-card p { margin-bottom: 0.75rem; color: #333; }
 .product-card .version { font-size: 0.9rem; color: #666; }
 .product-card a { color: var(--color-primary-dark); font-weight: 500; display: inline-block; margin-top: 0.5rem; }

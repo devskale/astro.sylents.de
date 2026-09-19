@@ -1,0 +1,59 @@
+---
+const site = Astro.site ?? new URL('https://www.sylents.de');
+const canonical = new URL('/danke/', site).toString();
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <title>Nachricht erhalten — Danke | Sylents</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Montserrat', system-ui, sans-serif;
+        background: linear-gradient(160deg, #f1f7f9, #dbeaee);
+        color: #333;
+        text-align: center;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid rgba(13, 31, 36, 0.06);
+        border-radius: 16px;
+        box-shadow: 0 12px 40px rgba(0, 60, 80, 0.08);
+        padding: 3rem 2.5rem;
+        max-width: 460px;
+        margin: 2rem;
+      }
+      h1 { font-size: 1.6rem; font-weight: 600; margin: 0 0 0.75rem; }
+      p { line-height: 1.6; color: #555; margin: 0 0 1.5rem; }
+      a.btn {
+        display: inline-block;
+        background: #00bcd4;
+        color: #fff;
+        text-decoration: none;
+        padding: 0.75rem 1.6rem;
+        border-radius: 10px;
+        font-weight: 600;
+      }
+      a.btn:hover { background: #019aae; }
+      small { color: #999; display: block; margin-top: 1.25rem; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Danke für Ihre Nachricht!</h1>
+      <p>Wir melden uns innerhalb von 48 Stunden bei Ihnen — „bei allen Gezeiten".</p>
+      <a href="/" class="btn">Zurück zur Startseite</a>
+      <small>Hi@sylents.de · VERVE Water Mobility GmbH</small>
+    </div>
+  </body>
+</html>

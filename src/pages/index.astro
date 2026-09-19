@@ -26,9 +26,8 @@ const partners = [
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Montserrat self-hosted (public/fonts) — kein Google-Fonts-CDN (DSGVO) -->
+    <link rel="preload" href="/fonts/montserrat-var.woff2" as="font" type="font/woff2" crossorigin />
     <title>Sylents – powerful electric waterjets</title>
   </head>
   <body>
@@ -53,6 +52,10 @@ const partners = [
     <main>
       <!-- Hero -->
       <section class="hero-section">
+        <div class="hero-video-wrap" id="heroVideoWrap" aria-hidden="true">
+          <div class="hero-video-media"><div id="heroVideo"></div></div>
+          <div class="hero-video-overlay"></div>
+        </div>
         <div class="container">
           <img src="/sylents-claim.svg" alt="sylents-claim" class="hero-claim" />
           <h3>Jet-Fahrspaß auf Seen.</h3>
@@ -93,7 +96,30 @@ const partners = [
             </ul>
           </div>
           <div class="intro-visual">
-            <img src="/outboard.png" alt="Sylents Außenboarder" />
+            <div class="slideshow" id="outboardSlideshow">
+              <div class="slide is-active">
+                <img src="/products/outboard/frontal.png" alt="Sylents Außenboarder SY3.1 – Frontalansicht" />
+              </div>
+              <div class="slide">
+                <img src="/products/outboard/seitlich-re.png" alt="Sylents Außenboarder SY3.1 – seitlich rechts" />
+              </div>
+              <div class="slide">
+                <img src="/products/outboard/eingeklappt.png" alt="Sylents Außenboarder SY3.1 – eingeklappt" />
+              </div>
+              <div class="slide">
+                <img src="/products/outboard/display.png" alt="Sylents Außenboarder SY3.1 – Display" />
+              </div>
+              <div class="slide">
+                <img src="/products/outboard/gondel.png" alt="Sylents Außenboarder SY3.1 – Gondel" />
+              </div>
+              <button class="slide-btn slide-prev" type="button" aria-label="Vorherige Darstellung">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <button class="slide-btn slide-next" type="button" aria-label="Nächste Darstellung">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+              <div class="slide-dots"></div>
+            </div>
           </div>
         </div>
       </section>
@@ -136,17 +162,27 @@ const partners = [
           <h2>Unsere Produkte und Services</h2>
           <div class="products-grid">
             <div class="product-card">
-              <img src="/inboard.png" alt="inboard" />
-              <h3>inboard</h3>
+              <img src="/inboard.png" alt="Innenborder" />
+              <h3>Innenborder</h3>
               <p>Integrierter Elektroantrieb für den festen Einbau – leise, wartungsarm, ideal für geschützte Gewässer.</p>
               <p class="version"><strong>Leistung:</strong> 1–10 kW</p>
               <a href="/produktseite/#inboard">Mehr erfahren...</a>
             </div>
             <div class="product-card">
-              <img src="/outboard.png" alt="outboard" />
-              <h3>outboard</h3>
+              <div class="product-slideshow" data-slideshow>
+                <div class="pslide is-active"><img src="/products/outboard/frontal.png" alt="Sylents Außenborder SY3.1 – Frontalansicht" /></div>
+                <div class="pslide"><img src="/products/outboard/seitlich-re.png" alt="Sylents Außenborder SY3.1 – seitlich rechts" /></div>
+                <div class="pslide"><img src="/products/outboard/eingeklappt.png" alt="Sylents Außenborder SY3.1 – eingeklappt" /></div>
+                <button class="pbtn pbtn-prev" type="button" aria-label="Vorherige Darstellung">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <button class="pbtn pbtn-next" type="button" aria-label="Nächste Darstellung">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+              </div>
+              <h3>Außenborder</h3>
               <p>Der leichte Außenboarder – in Minuten montiert und von überall startklar.</p>
-              <p class="version"><strong>Leistung:</strong> 1,2–4,5 kW</p>
+              <p class="version"><strong>Leistung:</strong> 1,0–4,5 kW</p>
               <a href="/produktseite/#outboard">Mehr erfahren...</a>
             </div>
             <div class="product-card">
@@ -173,13 +209,18 @@ const partners = [
             <p>email <a href="mailto:hi@sylents.de">hi@sylents.de</a></p>
           </div>
           <div class="contact-form">
-            <form>
+            <!-- all-inkl Formmail; Honeypot-Feld gegen simplen Bot-Spam (muss leer bleiben) -->
+            <form action="/system-cgi/formmail.pl" method="post">
+              <input type="hidden" name="recipient" value="hi@sylents.de" />
+              <input type="hidden" name="subject" value="Kontaktanfrage über sylents.de" />
+              <input type="hidden" name="redirect" value="https://www.sylents.de/danke/" />
               <input type="text" name="name" placeholder="Name *" required />
               <input type="email" name="email" placeholder="Email *" required />
               <textarea name="message" placeholder="Message *" required></textarea>
+              <input type="text" name="fax" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
               <label class="consent">
                 <input type="checkbox" required />
-                <span>Ich akzeptiere die <a href="/datenschutzerklaerung/">Datenschutzbedingungen</a>*</span>
+                <span>Ich akzeptiere die <a href="/datenschutz/">Datenschutzbedingungen</a>*</span>
               </label>
               <button type="submit" class="btn">Senden</button>
             </form>
@@ -212,7 +253,7 @@ const partners = [
           <p><strong>BIC</strong> HYVEDEMM300</p>
           <nav class="footer-legal">
             <a href="/impressum/">Impressum</a>
-            <a href="/datenschutzerklaerung/">Datenschutz</a>
+            <a href="/datenschutz/">Datenschutz</a>
             <a href="/agb/">AGB</a>
           </nav>
         </div>
@@ -234,6 +275,114 @@ const partners = [
       };
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
+
+      // Outboard slideshow: click arrows / dots to switch between renderings
+      const slideshow = document.getElementById('outboardSlideshow');
+      if (slideshow) {
+        const slides = slideshow.querySelectorAll('.slide');
+        const dotsWrap = slideshow.querySelector('.slide-dots');
+        const dots = Array.from(slides).map((_, i) => {
+          const d = document.createElement('button');
+          d.className = 'dot';
+          d.type = 'button';
+          d.setAttribute('aria-label', 'Darstellung ' + (i + 1));
+          d.addEventListener('click', () => show(i));
+          dotsWrap.appendChild(d);
+          return d;
+        });
+        let current = 0;
+        const show = (i) => {
+          current = (i + slides.length) % slides.length;
+          slides.forEach((s, idx) => s.classList.toggle('is-active', idx === current));
+          dots.forEach((d, idx) => d.classList.toggle('is-active', idx === current));
+        };
+        slideshow.querySelector('.slide-prev')?.addEventListener('click', () => show(current - 1));
+        slideshow.querySelector('.slide-next')?.addEventListener('click', () => show(current + 1));
+        show(0);
+      }
+
+      // Generic slideshows (e.g. product cards) driven by arrows
+      document.querySelectorAll('[data-slideshow]').forEach((ss) => {
+        const slides = ss.querySelectorAll('.pslide');
+        let cur = 0;
+        const go = (i) => {
+          cur = (i + slides.length) % slides.length;
+          slides.forEach((s, idx) => s.classList.toggle('is-active', idx === cur));
+        };
+        ss.querySelector('.pbtn-prev')?.addEventListener('click', () => go(cur - 1));
+        ss.querySelector('.pbtn-next')?.addEventListener('click', () => go(cur + 1));
+      });
+    </script>
+
+    <script is:inline define:vars={{ heroVideoId: 'UUnTM2u_i5o' }}>
+      // Hero: static image first (fast LCP), then fade into muted looping YouTube video.
+      const heroWrap = document.getElementById('heroVideoWrap');
+      let heroPlayer = null;
+      let videoStarted = false;
+
+      function getCoverSize() {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const aspect = 16 / 9;
+        if (vw / vh > aspect) return { w: vw, h: vw / aspect };
+        return { w: vh * aspect, h: vh };
+      }
+
+      function resizeHeroPlayer() {
+        if (!heroPlayer || !heroPlayer.setSize) return;
+        const { w, h } = getCoverSize();
+        heroPlayer.setSize(Math.round(w), Math.round(h));
+      }
+      window.addEventListener('resize', resizeHeroPlayer);
+
+      function fadeInVideo() {
+        if (!heroWrap || videoStarted) return;
+        videoStarted = true;
+        heroWrap.classList.add('is-visible');
+        heroWrap.closest('.hero-section')?.classList.add('video-active');
+      }
+
+      window.onYouTubeIframeAPIReady = function () {
+        if (!heroWrap) return;
+        const { w, h } = getCoverSize();
+        heroPlayer = new YT.Player('heroVideo', {
+          videoId: heroVideoId,
+          width: Math.round(w),
+          height: Math.round(h),
+          playerVars: {
+            autoplay: 1,
+            loop: 1,
+            playlist: heroVideoId,
+            controls: 0,
+            modestbranding: 1,
+            rel: 0,
+            fs: 0,
+            disablekb: 1,
+            playsinline: 1,
+            iv_load_policy: 3,
+          },
+          events: {
+            onReady: (e) => {
+              e.target.mute();
+              e.target.playVideo();
+              e.target.setPlaybackQuality('hd720');
+            },
+            onStateChange: (e) => {
+              if (e.data === YT.PlayerState.PLAYING) {
+                e.target.setPlaybackQuality('hd720');
+                // Fade in as soon as playback actually starts (no artificial delay).
+                fadeInVideo();
+              } else if (e.data === YT.PlayerState.ENDED) {
+                e.target.playVideo();
+              }
+            },
+          },
+        });
+      };
+
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      document.head.appendChild(tag);
     </script>
   </body>
 </html>
@@ -282,7 +431,7 @@ const partners = [
 .site-header.scrolled nav a:hover { color: #333333; }
 .site-header.scrolled nav a:hover { color: var(--color-primary); }
 
-/* === Hero (dark image, white text — transparent header reads against it) === */
+/* === Hero (image first for fast LCP, then fades into YouTube video) === */
 .hero-section {
   min-height: 80vh;
   display: flex;
@@ -304,7 +453,37 @@ const partners = [
   background: radial-gradient(ellipse at 50% 30%, rgba(0, 188, 212, 0.18), transparent 55%);
   pointer-events: none;
 }
-.hero-section .container { position: relative; z-index: 1; }
+.hero-video-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+.hero-video-wrap.is-visible {
+  opacity: 1;
+}
+.hero-video-media {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.hero-video-wrap > div {
+  width: 100%;
+  height: 100%;
+}
+.hero-video-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(0,188,212,0.10), rgba(13,31,36,0.45));
+  pointer-events: none;
+}
+.hero-section .container { position: relative; z-index: 1; transition: transform 1.2s ease; }
+.hero-section.video-active .container { transform: translateY(24vh); }
+@media (prefers-reduced-motion: reduce) {
+  .hero-video-wrap { display: none; }
+}
 .hero-claim { max-width: 350px; margin: 0 auto 2rem; }
 .hero-section h3 {
   font-family: 'Montserrat', sans-serif;
@@ -366,15 +545,87 @@ const partners = [
   padding: 2.5rem;
   min-height: 380px;
 }
-.intro-visual img {
+.intro-visual {
+  position: relative;
+}
+.slideshow {
+  position: relative;
+  width: 100%;
+  height: 360px;
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.slide.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+.slide img {
   max-height: 360px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 20px 40px rgba(0, 60, 80, 0.18));
 }
+.slide-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 188, 212, 0.35);
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--color-primary-dark);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 14px -6px rgba(0, 60, 80, 0.25);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.slide-btn:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+.slide-prev { left: -6px; }
+.slide-next { right: -6px; }
+.slide-dots {
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 3;
+}
+.dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 188, 212, 0.3);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.dot.is-active {
+  background: var(--color-primary);
+  transform: scale(1.25);
+}
 @media (max-width: 800px) {
   .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .intro-visual { min-height: 280px; padding: 1.5rem; }
+  .slideshow { height: 280px; }
+  .slide img { max-height: 280px; }
 }
 
 /* legacy intro helpers removed */
@@ -509,7 +760,7 @@ const partners = [
   box-shadow: var(--shadow-lg);
   transform: translateY(-6px);
 }
-.product-card img {
+.product-card > img {
   width: 100%;
   height: 200px;
   object-fit: contain;
@@ -517,11 +768,65 @@ const partners = [
   background-image: linear-gradient(160deg, #f3f8fa, #e6f0f3);
   margin-bottom: 1.5rem;
 }
+.product-slideshow {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius-md);
+  background-image: linear-gradient(160deg, #f3f8fa, #e6f0f3);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+.pslide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.pslide.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+.pslide img {
+  max-height: 200px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 0;
+  filter: drop-shadow(0 14px 26px rgba(0, 60, 80, 0.16));
+}
+.pbtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 188, 212, 0.35);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--color-primary-dark);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px -6px rgba(0, 60, 80, 0.25);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.pbtn:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+.pbtn-prev { left: 10px; }
+.pbtn-next { right: 10px; }
 .product-card h3 {
   font-size: 1.3rem;
   margin-bottom: 0.75rem;
   color: var(--color-primary);
-  text-transform: lowercase;
 }
 .product-card p {
   margin-bottom: 0.75rem;
