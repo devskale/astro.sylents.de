@@ -48,5 +48,6 @@ engineered), anti-references, and the strategic design principles that guide eve
 
 ## Conventions
 
+- **Astro-Technik (Scoping-Fallen, Slider-Muster, Bilder, PHP-Endpoints): [`ASTRO.md`](ASTRO.md)** — vor Code-Arbeit lesen.
 - Keep it minimal.
 - This file evolves as we go.
