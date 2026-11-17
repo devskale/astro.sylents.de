@@ -11,7 +11,7 @@ h1: 'Impressum'
 <p>VERVE Water Mobility GmbH<br />Carl-Benz-Str. 1<br />D-79331 Teningen</p>
 
 <h2>Vertreten durch</h2>
-<p>Hilmar Unterrainer<br />Johann Waldherr</p>
+<p>Hilmar Unterrainer</p>
 
 <h2>Kontakt</h2>
 <p>Telefon: +49 7663 9317-996<br />E-Mail: <a href="mailto:hi@sylents.de">hi@sylents.de</a></p>
