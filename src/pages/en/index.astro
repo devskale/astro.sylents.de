@@ -1,6 +1,13 @@
 ---
+import { getCollection } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import '../../styles/tokens.css';
+
+// Homepage texts from the content collection (home-en). Assets (images,
+// icons), hrefs and slides stay in code — only editorial text lives in
+// src/content/site/home-en.md.
+const home = (await getCollection('site')).find((e) => e.id === 'home-en')?.data;
+if (!home) throw new Error('src/content/site/home-en.md fehlt');
 
 const partners = [
   { src: '/partner-zentipe.svg', alt: 'Zentipe Innovation AG' },
@@ -12,37 +19,27 @@ const partners = [
   { src: '/partner-bild5.png', alt: 'partner' },
 ];
 
-const benefits = [
-  {
-    icon: '<circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l4 2.5 2.5 4-4-2.5z"/>',
-    title: 'Agile & direct',
-    body: 'Instant thrust from a standstill and effortless maneuvering – the typical jet feel that no propeller offers.',
-  },
-  {
-    icon: '<path d="M2 18c1.5 0 1.5 1.5 3 1.5S6.5 18 8 18s1.5 1.5 3 1.5S12.5 18 14 18s1.5 1.5 3 1.5S18.5 18 20 18s1.5 1.5 3 1.5"/><circle cx="12" cy="7" r="3"/><path d="M5 21c0-3.9 3.1-7 7-7"/>',
-    title: 'Safe in shallow waters',
-    body: 'No external moving parts – safe for swimmers. And ideal for shallow shores, reed beds and harbours, where propellers fail.',
-  },
-  {
-    icon: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
-    title: 'Available as outboard, inboard & pod',
-    body: 'Since Sylents, there is a matching jet drive for every leisure boat on the lake.',
-  },
+const benefitIcons = [
+  '<circle cx="12" cy="12" r="9"/><path d="M8.5 8.5l4 2.5 2.5 4-4-2.5z"/>',
+  '<path d="M2 18c1.5 0 1.5 1.5 3 1.5S6.5 18 8 18s1.5 1.5 3 1.5S12.5 18 14 18s1.5 1.5 3 1.5S18.5 18 20 18s1.5 1.5 3 1.5"/><circle cx="12" cy="7" r="3"/><path d="M5 21c0-3.9 3.1-7 7-7"/>',
+  '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
 ];
+const benefits = home.benefits.cards.map((c, i) => ({ icon: benefitIcons[i], title: c.title, body: c.text }));
 
-const products = [
-  { img: '/inboard.png', alt: 'Inboard', name: 'Inboard', desc: 'Integrated electric drive for permanent installation – quiet, low-maintenance, ideal for sheltered waters.', power: '1–10 kW', href: '/en/products/#inboard' },
-  { img: '/outboard.png', alt: 'Outboard', name: 'Outboard', desc: 'The lightweight outboard – mounted in minutes and ready to launch from anywhere.', power: '1.0–4.5 kW', href: '/en/products/#outboard',
+const productMeta = [
+  { img: '/inboard.png', alt: 'Inboard', href: '/en/products/#inboard' },
+  { img: '/outboard.png', alt: 'Outboard', href: '/en/products/#outboard',
     slides: [
       { src: '/products/outboard/frontal.png', alt: 'Sylents outboard SY3.1 – front view' },
       { src: '/products/outboard/seitlich-re.png', alt: 'Sylents outboard SY3.1 – right side view' },
       { src: '/products/outboard/eingeklappt.png', alt: 'Sylents outboard SY3.1 – folded' },
     ] },
-  { img: '/pod.png', alt: 'Pod', name: 'Pod', desc: 'Compact pod drive for sailboats and shallow waters – space-saving with complete energy management.', power: '1–10 kW', href: '/en/products/' },
+  { img: '/pod.png', alt: 'Pod', href: '/en/products/' },
 ];
+const products = productMeta.map((p, i) => ({ ...p, ...home.productCards.cards[i] }));
 ---
 
-<SiteLayout lang="en" title="Sylents — Electric jet drives for leisure boats" description="Electric jet drives for leisure boats – silent, emission-free, blockage-free. Available as outboard, inboard and pod.">
+<SiteLayout lang="en" title={home.title} description={home.metaDescription}>
   <!-- Hero -->
   <section class="hero-section">
     <div class="hero-video-wrap" id="heroVideoWrap" aria-hidden="true">
@@ -51,13 +48,13 @@ const products = [
     </div>
     <div class="container">
       <img src="/sylents-claim.svg" alt="sylents-claim" class="hero-claim" />
-      <h3>Jet fun on the lakes.</h3>
+      <h3>{home.heroTagline}</h3>
     </div>
   </section>
 
   <!-- Partners -->
   <section class="partners-section">
-    <div class="container"><p class="partners-label">supported by</p></div>
+    <div class="container"><p class="partners-label">{home.partnersLabel}</p></div>
     <div class="partner-logos-wrapper">
       <div class="partner-logos-track">
         {[...partners, ...partners].map((p) => (
@@ -73,11 +70,11 @@ const products = [
   <section class="intro-section">
     <div class="container intro-grid">
       <div class="intro-text">
-        <span class="eyebrow">Electric jet drives</span>
-        <h2>Silent. Powerful. Emission-free.</h2>
-        <p class="lead">Sylents develops and produces electric water-jet drives with an internal electric motor – water-cooled, blockage-free and with a closed impeller. For lasting fun on lakes and along the coast.</p>
+        <span class="eyebrow">{home.intro.eyebrow}</span>
+        <h2>{home.intro.title}</h2>
+        <p class="lead">{home.intro.lead}</p>
         <ul class="intro-tags">
-          <li>Silent</li><li>Emission-free</li><li>Blockage-free</li><li>Low-maintenance</li><li>Safe for swimmers</li>
+          {home.intro.tags.map((t) => <li>{t}</li>)}
         </ul>
       </div>
       <div class="intro-visual">
@@ -103,9 +100,9 @@ const products = [
   <section class="benefits-section">
     <div class="container">
       <div class="benefits-head">
-        <span class="eyebrow">Jet Experience</span>
-        <h2>What sets jets apart.</h2>
-        <p class="benefits-lead">For a long time, jets were a niche solution. Sylents makes them the standard – for every leisure boat on the lake.</p>
+        <span class="eyebrow">{home.benefits.eyebrow}</span>
+        <h2>{home.benefits.title}</h2>
+        <p class="benefits-lead">{home.benefits.lead}</p>
       </div>
       <div class="benefits-grid">
         {benefits.map((b) => (
@@ -124,7 +121,7 @@ const products = [
   <!-- Products -->
   <section class="products-section">
     <div class="container">
-      <h2>Our products & services</h2>
+      <h2>{home.productCards.title}</h2>
       <div class="products-grid">
         {products.map((p) => (
           <div class="product-card">
@@ -145,8 +142,8 @@ const products = [
             )}
             <h3>{p.name}</h3>
             <p>{p.desc}</p>
-            <p class="version"><strong>Power:</strong> {p.power}</p>
-            <a href={p.href}>Learn more...</a>
+            <p class="version"><strong>{home.productCards.labelPower}:</strong> {p.power}</p>
+            <a href={p.href}>{home.productCards.moreLabel}</a>
           </div>
         ))}
       </div>
@@ -157,13 +154,12 @@ const products = [
   <section class="contact-section">
     <div class="container contact-grid">
       <div class="contact-info">
-        <h2>Any questions?</h2>
-        <h3>Get in touch –<br />we answer at any tide</h3>
-        <p>Leave your name and contact details – we reply within 48 hours or less.</p>
-        <p>Hans Waldherr, Co-Founder</p>
-        <p>Hilmar Unterrainer, Co-Founder</p>
-        <p>tel <a href="tel:+4976639317996">+49 7663 9317-996</a></p>
-        <p>email <a href="mailto:hi@sylents.de">hi@sylents.de</a></p>
+        <h2>{home.contact.title}</h2>
+        <h3>{home.contact.subtitleLines[0]}<br />{home.contact.subtitleLines[1]}</h3>
+        <p>{home.contact.text}</p>
+        {home.contact.persons.map((p) => <p>{p}</p>)}
+        <p>{home.contact.telLabel} <a href={`tel:${home.contact.tel.replace(/[\s-]/g, '')}`}>{home.contact.tel}</a></p>
+        <p>{home.contact.emailLabel} <a href={`mailto:${home.contact.email}`}>{home.contact.email}</a></p>
       </div>
       <div class="contact-form">
         <!-- all-inkl Formmail; honeypot field against simple bot spam (must stay empty) -->
@@ -171,15 +167,15 @@ const products = [
           <input type="hidden" name="recipient" value="hi@sylents.de" />
           <input type="hidden" name="subject" value="Contact request via sylents.de (EN)" />
           <input type="hidden" name="redirect" value="https://www.sylents.de/danke/" />
-          <input type="text" name="name" placeholder="Name *" required />
-          <input type="email" name="email" placeholder="Email *" required />
-          <textarea name="message" placeholder="Message *" required></textarea>
+          <input type="text" name="name" placeholder={home.contact.form.namePlaceholder} required />
+          <input type="email" name="email" placeholder={home.contact.form.emailPlaceholder} required />
+          <textarea name="message" placeholder={home.contact.form.messagePlaceholder} required></textarea>
           <input type="text" name="fax" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <label class="consent">
             <input type="checkbox" required />
-            <span>I accept the <a href="/en/privacy/">privacy policy</a>*</span>
+            <span>{home.contact.form.consentPrefix} <a href="/en/privacy/">{home.contact.form.consentLinkText}</a>*</span>
           </label>
-          <button type="submit" class="btn">Send</button>
+          <button type="submit" class="btn">{home.contact.form.submit}</button>
         </form>
       </div>
     </div>
@@ -192,17 +188,17 @@ const products = [
   if (slideshow) {
     const slides = slideshow.querySelectorAll('.slide');
     const dotsWrap = slideshow.querySelector('.slide-dots');
-    const dots = Array.from(slides).map((_, i) => {
+    const dots = Array.from(slides).map((_, i: number) => {
       const d = document.createElement('button');
       d.className = 'dot';
       d.type = 'button';
       d.setAttribute('aria-label', 'View ' + (i + 1));
       d.addEventListener('click', () => show(i));
-      dotsWrap.appendChild(d);
+      dotsWrap?.appendChild(d);
       return d;
     });
     let current = 0;
-    const show = (i) => {
+    const show = (i: number) => {
       current = (i + slides.length) % slides.length;
       slides.forEach((s, idx) => s.classList.toggle('is-active', idx === current));
       dots.forEach((d, idx) => d.classList.toggle('is-active', idx === current));
@@ -216,7 +212,7 @@ const products = [
   document.querySelectorAll('[data-slideshow]').forEach((ss) => {
     const slides = ss.querySelectorAll('.pslide');
     let cur = 0;
-    const go = (i) => {
+    const go = (i: number) => {
       cur = (i + slides.length) % slides.length;
       slides.forEach((s, idx) => s.classList.toggle('is-active', idx === cur));
     };

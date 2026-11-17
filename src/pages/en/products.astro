@@ -1,18 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import '../../styles/tokens.css';
 
-const products = [
-  { id: 'outboard', name: 'Sylents outboard', tag: 'Light. Mobile. Ready in minutes.', power: '1.0–4.5 kW', img: '/outboard.png',
-    gallery: ['/products/outboard/frontal.png','/products/outboard/seitlich-re.png','/products/outboard/eingeklappt.png','/products/outboard/display.png','/products/outboard/gondel.png','/products/outboard/boc.png'],
-    points: ['Just 14.6 kg incl. battery – fits any roof and transom','Closed jet drive: no propeller, no injury risk','Up to 50 minutes of riding under full load','Blockage-free through reeds, sand and shallow shores'] },
-  { id: 'inboard', name: 'Sylents inboard', tag: 'Integrated. Low-maintenance. For sheltered waters.', power: '1–10 kW', img: '/inboard.png',
-    gallery: ['/products/inboard-jet.jpg','/products/inboard-bench.png'],
-    points: ['Integrated, water-cooled electric drive up to 5,000 rpm','Coordinated overall system with a safety concept','All components matched and waterproof','An economical alternative for intensive use'] },
-  { id: 'pod', name: 'Sylents pod drive', tag: 'Compact. Space-saving. For shallow waters.', power: '1–10 kW', img: '/pod.png',
-    gallery: ['/products/pod-studio.jpg','/products/pod-render.png','/products/pod-prototype.png'],
-    points: ['Lightweight, space-saving pod drive for sailboats, houseboats and yachts','Complete energy management from a single source','Ideal for shallow waters, reed beds and harbours','Closed, indestructible drive system'] },
-];
+// Products from the content collection (EN texts), ordered via `order`.
+const products = (await getCollection('products'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => ({ id: e.data.id, ...e.data.en, img: e.data.img, gallery: e.data.gallery }));
 ---
 
 <SiteLayout lang="en" title="Products | Sylents" description="Electric jet drives as outboard, inboard and pod – a matching jet for every leisure boat.">
@@ -128,7 +122,7 @@ const products = [
   document.querySelectorAll('[data-gallery]').forEach((gallery) => {
     const slides = Array.from(gallery.querySelectorAll('.gallery-slide'));
     const dotsWrap = gallery.querySelector('.gallery-dots');
-    if (slides.length < 2) return;
+    if (slides.length < 2 || !dotsWrap) return;
 
     let current = 0;
     const dots = slides.map((_, i) => {
@@ -139,14 +133,14 @@ const products = [
       return d;
     });
 
-    function show(i) {
+    function show(i: number) {
       current = (i + slides.length) % slides.length;
       slides.forEach((s, idx) => s.classList.toggle('is-active', idx === current));
       dots.forEach((d, idx) => d.classList.toggle('is-active', idx === current));
     }
 
-    gallery.querySelector('[data-prev]').addEventListener('click', () => show(current - 1));
-    gallery.querySelector('[data-next]').addEventListener('click', () => show(current + 1));
+    gallery.querySelector('[data-prev]')?.addEventListener('click', () => show(current - 1));
+    gallery.querySelector('[data-next]')?.addEventListener('click', () => show(current + 1));
     show(0);
   });
 </script>

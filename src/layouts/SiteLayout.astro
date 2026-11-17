@@ -1,7 +1,9 @@
 ---
 import '../styles/tokens.css';
-import { getLangFromUrl, useTranslations, altLangPath } from '../i18n/utils';
+import { getLangFromUrl, altLangPath } from '../i18n/utils';
 import type { Lang } from '../i18n/ui';
+import { getCollection } from 'astro:content';
+import SiteFooter from '../components/SiteFooter.astro';
 
 interface Props {
   title: string;
@@ -10,7 +12,11 @@ interface Props {
 }
 
 const lang = Astro.props.lang ?? getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+
+// Nav-/Footer-Texte + Firmendaten aus der settings-Collection.
+const settings = (await getCollection('settings')).find((e) => e.id === `settings-${lang}`)?.data;
+if (!settings) throw new Error(`src/content/settings/settings-${lang}.md fehlt`);
+
 const {
   title,
   description = lang === 'en'
@@ -21,11 +27,11 @@ const {
 const site = Astro.site ?? new URL('http://localhost:4321');
 const canonical = new URL(Astro.url.pathname, site).toString().replace(/\/$/, '');
 const nav = [
-  { href: lang === 'en' ? '/en/' : '/', label: t('nav.home') },
-  { href: lang === 'en' ? '/en/products/' : '/produktseite/', label: t('nav.products') },
-  { href: lang === 'en' ? '/en/career/' : '/karriere/', label: t('nav.career') },
-  { href: lang === 'en' ? '/en/team/' : '/team/', label: t('nav.team') },
-  { href: lang === 'en' ? '/en/shop-info/' : '/shop-info/', label: t('nav.shop') },
+  { href: lang === 'en' ? '/en/' : '/', label: settings.nav.home },
+  { href: lang === 'en' ? '/en/products/' : '/produktseite/', label: settings.nav.products },
+  { href: lang === 'en' ? '/en/career/' : '/karriere/', label: settings.nav.career },
+  { href: lang === 'en' ? '/en/team/' : '/team/', label: settings.nav.team },
+  { href: lang === 'en' ? '/en/shop-info/' : '/shop-info/', label: settings.nav.shop },
 ];
 const switchTo = altLangPath(Astro.url);
 const switchLabel = switchTo.lang === 'en' ? 'EN' : 'DE';
@@ -72,42 +78,7 @@ const switchLabel = switchTo.lang === 'en' ? 'EN' : 'DE';
       <slot />
     </main>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-      <div class="container footer-grid">
-        <div class="footer-col footer-brand">
-          <img src="/sylents-2c_1.svg" alt="Sylents" class="footer-logo" />
-          <p class="footer-tagline">{t('footer.tagline')}</p>
-          <p class="footer-desc">{t('footer.desc')}</p>
-          <div class="footer-contact">
-            <a href="tel:+4976639317996">+49 7663 9317-996</a>
-            <a href="mailto:hi@sylents.de">hi@sylents.de</a>
-          </div>
-        </div>
-        <div class="footer-col">
-          <h4>{t('footer.locations')}</h4>
-          <p><strong>{t('footer.hq')}</strong><br />Carl-Benz-Str. 1<br />D-79331 Teningen</p>
-        </div>
-        <div class="footer-col">
-          <h4>{t('footer.legal')}</h4>
-          <p>Amtsgericht Freiburg<br />HRB 719693</p>
-          <p><strong>UID</strong> DE323526109</p>
-          <p><strong>IBAN</strong> DE66 2003 0000 0020 2271 20</p>
-          <p><strong>BIC</strong> HYVEDEMM300</p>
-          <nav class="footer-legal">
-            <a href={lang === 'en' ? '/en/imprint/' : '/impressum/'}>{t('footer.imprint')}</a>
-            <a href={lang === 'en' ? '/en/privacy/' : '/datenschutz/'}>{t('footer.privacy')}</a>
-            <a href={lang === 'en' ? '/en/terms/' : '/agb/'}>{t('footer.terms')}</a>
-          </nav>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <div class="container footer-bottom-inner">
-          <span>© {new Date().getFullYear()} VERVE Water Mobility GmbH</span>
-          <span>Sylents — powerful electric waterjets</span>
-        </div>
-      </div>
-    </footer>
+    <SiteFooter locale={lang} />
 
     <script is:inline>
       const header = document.getElementById('siteHeader');
@@ -217,46 +188,6 @@ const switchLabel = switchTo.lang === 'en' ? 'EN' : 'DE';
       .prose p { margin-bottom: 1rem; line-height: 1.8; color: #444; }
       .prose strong { color: #222; }
       .prose a { color: var(--color-primary-dark); }
-
-      /* Footer */
-      .site-footer {
-        margin-top: auto;
-        border-top: 1px solid var(--color-border);
-        background: #0d1f24;
-        color: #c8d6da;
-      }
-      .footer-grid {
-        display: grid;
-        grid-template-columns: 1.4fr 1fr 1fr;
-        gap: 3rem;
-        padding: 64px 15px 48px;
-      }
-      .footer-brand { display: flex; flex-direction: column; gap: 0.5rem; }
-      .footer-logo { width: 116px; height: 34px; margin: 0 0 0.75rem; filter: brightness(0) invert(1); }
-      .footer-tagline { color: #00bcd4; font-weight: 500; font-size: 0.9rem; }
-      .footer-desc { color: #7d9298; font-size: 0.85rem; line-height: 1.6; max-width: 280px; margin-bottom: 0.75rem; }
-      .footer-contact { display: flex; flex-direction: column; gap: 0.35rem; }
-      .footer-contact a { color: #ffffff; font-size: 0.9rem; }
-      .footer-contact a:hover { color: var(--color-primary); }
-      .footer-col h4 {
-        font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
-        color: #00bcd4; margin-bottom: 1rem; font-weight: 600;
-      }
-      .footer-col p { margin-bottom: 0.85rem; font-size: 0.88rem; line-height: 1.6; color: #c8d6da; }
-      .footer-col p strong { color: #ffffff; }
-      .footer-legal { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
-      .footer-legal a { color: #c8d6da; font-size: 0.88rem; }
-      .footer-legal a:hover { color: var(--color-primary); }
-      .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding: 18px 0; }
-      .footer-bottom-inner {
-        max-width: 1140px; margin: 0 auto; padding: 0 15px;
-        display: flex; justify-content: space-between; align-items: center;
-        font-size: 0.82rem; color: #7d9298;
-      }
-      @media (max-width: 800px) {
-        .footer-grid { grid-template-columns: 1fr; gap: 2rem; padding: 48px 15px 32px; }
-        .footer-bottom-inner { flex-direction: column; gap: 0.4rem; }
-      }
     </style>
   </body>
 </html>

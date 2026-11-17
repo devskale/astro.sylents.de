@@ -1,45 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import '../styles/tokens.css';
 
-const team = [
-  {
-    name: 'Hilmar Unterrainer',
-    role: 'Co-Founder · Industrial Engineer',
-    img: '/team/hilmar.png',
-    bio: 'Hintergrund in Elektronik und Betriebswirtschaft. Langjährige Erfahrung in der Projektleitung und in der Entwicklung elektrischer Antriebe.',
-  },
-  {
-    name: 'Johann Waldherr',
-    role: 'Co-Founder · MSc Computer Science',
-    img: '/team/hans.jpg',
-    bio: 'Master in Computertechnik. Schwerpunkt auf Embedded Systems und Robotics.',
-  },
-  {
-    name: 'Philipp',
-    role: 'Mechatronics',
-    img: '/team/philipp.png',
-    bio: 'Absolvent der Höheren Technischen Bundeslehranstalt Wels, Mechatroniker mit Praxis in der elektrischen Antriebstechnik.',
-  },
-  {
-    name: 'Christian',
-    role: 'Electronics Engineer',
-    img: '/team/christian.png',
-    bio: 'Embedded Hardware- und Softwareentwicklung – von der Baugruppe über Kommunikationstechnik bis zum kompletten System.',
-  },
-  {
-    name: 'Peter',
-    role: 'Mechatronics / Robotics',
-    img: '/team/peter.jpg',
-    bio: 'Master in Robotik und Kybernetik. Erfahrener Produktentwickler für unterschiedlichste Branchen mit mehreren marktreifen Produkten.',
-  },
-  {
-    name: 'Matej',
-    role: 'PhD Hydrodynamics / CFD',
-    img: '/team/matej.jpg',
-    bio: 'Promotion in Hydrodynamik mit Schwerpunkt auf der Optimierung hydraulischer Maschinen und CFD-Simulationen.',
-  },
-];
+// Team aus der Content-Collection (DE-Texte), Reihenfolge via `order`.
+const team = (await getCollection('team'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => ({ name: e.data.name, img: e.data.img, ...e.data.de }));
 ---
 
 <SiteLayout title="Team | Sylents" description="Das Sylents-Team: erfahrene Ingenieure für Elektromobilität, Hydrodynamik und Embedded Systems.">

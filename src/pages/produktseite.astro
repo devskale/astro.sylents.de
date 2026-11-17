@@ -1,65 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import '../styles/tokens.css';
 
-const products = [
-  {
-    id: 'outboard',
-    name: 'Außenborder',
-    tag: 'Leicht. Mobil. In Minuten startklar.',
-    power: '1,0–4,5 kW',
-    img: '/outboard.png',
-    gallery: [
-      '/products/outboard/frontal.png',
-      '/products/outboard/seitlich-re.png',
-      '/products/outboard/eingeklappt.png',
-      '/products/outboard/display.png',
-      '/products/outboard/gondel.png',
-      '/products/outboard/boc.png',
-    ],
-    points: [
-      'Nur 14,6 kg inklusive Batterie – passt auf jedes Dach und jeden Heckspiegel',
-      'Geschlossener Jetantrieb: kein Propeller, keine Verletzungsgefahr',
-      'Bis zu 50 Minuten Fahrspaß unter Volllast',
-      'Blockierungsfrei durch Schilf, Sand und über seichte Ufer',
-    ],
-  },
-  {
-    id: 'inboard',
-    name: 'Innenborder',
-    tag: 'Integriert. Wartungsarm. Für geschützte Gewässer.',
-    power: '1–10 kW',
-    img: '/inboard.png',
-    gallery: [
-      '/products/inboard-jet.jpg',
-      '/products/inboard-bench.png',
-    ],
-    points: [
-      'Integrierter, wassergekühlter Elektroantrieb bis 5.000 U/min',
-      'Abgestimmtes Gesamtsystem mit durchdachtem Sicherheitskonzept',
-      'Alle Komponenten koordiniert und wasserdicht',
-      'Wirtschaftliche Alternative für intensive Nutzung',
-    ],
-  },
-  {
-    id: 'pod',
-    name: 'Pod-Antrieb',
-    tag: 'Kompakt. Platzsparend. Für flache Gewässer.',
-    power: '1–10 kW',
-    img: '/pod.png',
-    gallery: [
-      '/products/pod-studio.jpg',
-      '/products/pod-render.png',
-      '/products/pod-prototype.png',
-    ],
-    points: [
-      'Leichter, raumsparender Pod-Drive für Segelboote, Hausboote und Yachten',
-      'Komplettes Energiemanagement aus einer Hand',
-      'Ideal für seichte Gewässer, Schilfzonen und Hafenbecken',
-      'Geschlossenes, unzerstörbares Antriebssystem',
-    ],
-  },
-];
+// Produkte aus der Content-Collection (DE-Texte), Reihenfolge via `order`.
+// Markup/Struktur bleibt unverändert — p.id, p.name, p.tag, p.power,
+// p.img, p.gallery, p.points kommen jetzt aus src/content/products/*.md.
+const products = (await getCollection('products'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => ({ id: e.data.id, ...e.data.de, img: e.data.img, gallery: e.data.gallery }));
 ---
 
 <SiteLayout title="Produkte | Sylents" description="Elektrische Jetantriebe als Außen-, Innenboarder und Pod – für jedes Freizeitboot auf dem See.">
@@ -205,7 +154,7 @@ const products = [
   document.querySelectorAll('[data-gallery]').forEach((gallery) => {
     const slides = Array.from(gallery.querySelectorAll('.gallery-slide'));
     const dotsWrap = gallery.querySelector('.gallery-dots');
-    if (slides.length < 2) return;
+    if (slides.length < 2 || !dotsWrap) return;
 
     let current = 0;
     const dots = slides.map((_, i) => {
@@ -216,14 +165,14 @@ const products = [
       return d;
     });
 
-    function show(i) {
+    function show(i: number) {
       current = (i + slides.length) % slides.length;
       slides.forEach((s, idx) => s.classList.toggle('is-active', idx === current));
       dots.forEach((d, idx) => d.classList.toggle('is-active', idx === current));
     }
 
-    gallery.querySelector('[data-prev]').addEventListener('click', () => show(current - 1));
-    gallery.querySelector('[data-next]').addEventListener('click', () => show(current + 1));
+    gallery.querySelector('[data-prev]')?.addEventListener('click', () => show(current - 1));
+    gallery.querySelector('[data-next]')?.addEventListener('click', () => show(current + 1));
     show(0);
   });
 </script>

@@ -1,25 +1,31 @@
 ---
+import { getCollection } from 'astro:content';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import '../styles/tokens.css';
 
 const formPath = '/shop-info/';
+
+// Shop-Voranmeldung: Texte aus der Content-Collection (shopinfo-de).
+const entry = (await getCollection('shopinfo')).find((e) => e.id === 'shopinfo-de')?.data;
+if (!entry) throw new Error('src/content/shopinfo/shopinfo-de.md fehlt');
+const n = entry.notify;
 ---
 
-<SiteLayout title="Shop | Sylents" description="Der Sylents Shop ist im Aufbau – hinterlassen Sie Ihre E-Mail-Adresse und lassen Sie sich benachrichtigen, sobald der Shop verfügbar ist.">
+<SiteLayout title={entry.meta.title} description={entry.meta.description}>
   <section class="page-hero">
     <div class="container">
       <span class="breadcrumb">Shop</span>
-      <h1>Der Sylents Shop ist im Aufbau.</h1>
-      <p>Unsere Produkte sind bald direkt online bestellbar – hinterlassen Sie Ihre E-Mail-Adresse und wir benachrichtigen Sie, sobald der Shop verfügbar ist.</p>
+      <h1>{entry.hero.h1}</h1>
+      <p>{entry.hero.text}</p>
     </div>
   </section>
 
   <section class="notify-section">
     <div class="container notify-grid">
       <div class="notify-body">
-        <span class="eyebrow">Voranmeldung</span>
-        <h2>Wer zuerst kommt, fährt zuerst.</h2>
-        <p class="lead">Hinterlassen Sie Ihre E-Mail-Adresse – wir informieren Sie persönlich, sobald der Shop startet. Freuen Sie sich auf Vergünstigungen für Frühbesteller.</p>
+        <span class="eyebrow">{n.eyebrow}</span>
+        <h2>{n.title}</h2>
+        <p class="lead">{n.lead}</p>
 
         <form class="notify-form" action="/shop-notify.php" method="post">
           <input type="hidden" name="lang" value="de" />
@@ -28,21 +34,21 @@ const formPath = '/shop-info/';
           <input type="text" name="fax" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <label class="field">
-            <span>E-Mail-Adresse *</span>
-            <input type="email" name="email" required placeholder="ihre@email.de" autocomplete="email" />
+            <span>{n.emailLabel}</span>
+            <input type="email" name="email" required placeholder={n.emailPlaceholder} autocomplete="email" />
           </label>
 
           <label class="consent">
             <input type="checkbox" name="consent" value="1" required />
-            <span>Ich akzeptiere die <a href="/datenschutz/">Datenschutzbedingungen</a> und möchte informiert werden, sobald der Shop verfügbar ist.*</span>
+            <span>{n.consentPrefix} <a href="/datenschutz/">{n.consentLinkText}</a> {n.consentSuffix}</span>
           </label>
 
-          <button type="submit" class="btn">Benachrichtigen</button>
+          <button type="submit" class="btn">{n.submit}</button>
         </form>
 
         <div class="form-msg ok" id="msg-ok" hidden>
-          <strong>Danke!</strong> Wir benachrichtigen Sie, sobald der Shop verfügbar ist.
-          <span id="msg-dup" hidden>Diese E-Mail-Adresse war bereits registriert.</span>
+          <strong>{n.okTitle}</strong> {n.okText}
+          <span id="msg-dup" hidden>{n.dupText}</span>
         </div>
         <div class="form-msg err" id="msg-err" hidden></div>
       </div>
@@ -54,7 +60,7 @@ const formPath = '/shop-info/';
   </section>
 </SiteLayout>
 
-<script is:inline>
+<script is:inline define:vars={{ errEmail: n.errEmail, errConsent: n.errConsent, errBot: n.errBot }}>
   // Feedback nach Redirect vom PHP-Endpoint (?ok=1 / ?dup=1 / ?error=…)
   (function () {
     var p = new URLSearchParams(location.search);
@@ -70,9 +76,9 @@ const formPath = '/shop-info/';
       var err = document.getElementById('msg-err');
       if (err) {
         var texts = {
-          email: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
-          consent: 'Bitte akzeptieren Sie die Datenschutzbedingungen.',
-          bot: 'Da ist etwas schiefgelaufen. Bitte versuchen Sie es erneut.'
+          email: errEmail,
+          consent: errConsent,
+          bot: errBot
         };
         err.textContent = texts[p.get('error')] || texts.bot;
         err.hidden = false;

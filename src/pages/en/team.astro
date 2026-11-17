@@ -1,15 +1,12 @@
 ---
+import { getCollection } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import '../../styles/tokens.css';
 
-const team = [
-  { name: 'Hilmar Unterrainer', role: 'Co-Founder · Industrial Engineer', img: '/team/hilmar.png', bio: 'Background in electronics and business administration. Years of experience in project management and in developing electric drives.' },
-  { name: 'Johann Waldherr', role: 'Co-Founder · MSc Computer Engineering', img: '/team/hans.jpg', bio: 'Master in Computer Engineering, with a focus on embedded systems and robotics.' },
-  { name: 'Philipp', role: 'Mechatronics', img: '/team/philipp.png', bio: 'Graduate of the Higher Technical Institute Wels, mechatronics engineer with hands-on experience in electric drive technology.' },
-  { name: 'Christian', role: 'Electronics Engineer', img: '/team/christian.png', bio: 'Embedded hardware and software development – from components and communications technology to complete systems.' },
-  { name: 'Peter', role: 'Mechatronics / Robotics', img: '/team/peter.jpg', bio: 'Master in robotics and cybernetics. Experienced product developer across several industries with multiple market-ready products.' },
-  { name: 'Matej', role: 'PhD Hydrodynamics / CFD', img: '/team/matej.jpg', bio: 'PhD in hydrodynamics, focused on optimising hydraulic machines and CFD simulations.' },
-];
+// Team from the content collection (EN texts), ordered via `order`.
+const team = (await getCollection('team'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => ({ name: e.data.name, img: e.data.img, ...e.data.en }));
 ---
 
 <SiteLayout lang="en" title="Team | Sylents" description="The Sylents team: experienced engineers in e-mobility, hydrodynamics and embedded systems.">

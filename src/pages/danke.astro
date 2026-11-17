@@ -1,4 +1,11 @@
 ---
+import { getCollection } from 'astro:content';
+
+// Dankeseite (Redirect-Ziel der Kontaktformulare) — Texte aus settings-de.
+const settings = (await getCollection('settings')).find((e) => e.id === 'settings-de')?.data;
+if (!settings?.danke) throw new Error('src/content/settings/settings-de.md: danke-Sektion fehlt');
+const d = settings.danke;
+
 const site = Astro.site ?? new URL('https://www.sylents.de');
 const canonical = new URL('/danke/', site).toString();
 ---
@@ -11,7 +18,7 @@ const canonical = new URL('/danke/', site).toString();
     <meta name="robots" content="noindex, follow" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <title>Nachricht erhalten — Danke | Sylents</title>
+    <title>{d.title}</title>
     <style>
       body {
         margin: 0;
@@ -50,10 +57,10 @@ const canonical = new URL('/danke/', site).toString();
   </head>
   <body>
     <div class="card">
-      <h1>Danke für Ihre Nachricht!</h1>
-      <p>Wir melden uns innerhalb von 48 Stunden bei Ihnen — „bei allen Gezeiten".</p>
-      <a href="/" class="btn">Zurück zur Startseite</a>
-      <small>Hi@sylents.de · VERVE Water Mobility GmbH</small>
+      <h1>{d.heading}</h1>
+      <p>{d.text}</p>
+      <a href="/" class="btn">{d.backLabel}</a>
+      <small>{d.small}</small>
     </div>
   </body>
 </html>

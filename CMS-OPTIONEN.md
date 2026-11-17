@@ -1,32 +1,44 @@
 # CMS-Optionen für Astro — Recherche (Stand 2026-11-17)
 
-> ## ✅ FINALE EMPFEHLUNG (17.11.2026, rev. 3): **TinaCMS**
+## ✅ FINALE EMPFEHLUNG (17.11.2026, rev. 4): **CaretCMS** — das Tool aus baumschneider
 >
-> Kriterien (final): **Astro-nativ + WordPress-Feeling + visuelles Editing (PFLICHT) +
-> free/OSS + kein alter Ballast**.
+> **Entdeckung durch Nachfrage:** In `../baumschneider/` läuft bereits **CaretCMS**
+> (`@caretcms/core`, [MIT](https://github.com/web-stacked/caretcms), Astro-Integration,
+> v0.6.1) — **produktiv** für timosbaumdienst.com. Es erfüllt alle harten Kriterien:
 >
-> **Tina erfüllt alle:**
-> - **Visuelles Click-to-Edit auf der echten Seite** — das Elementor-Gefühl: Redakteur öffnet
->   die Seite, klickt Inhalte direkt an, editiert in der Sidebar ([offizielle
->   Astro-Visual-Editing-Doku](https://tina.io/docs/contextual-editing/astro), `@tinacms/astro`,
->   TinaIsland, kein React im Page-Tree)
-> - **Astro ist Tinas Default-Starter** ([Astro-Guide](https://tina.io/docs/frameworks/astro)),
->   [offizieller Astro-Guide](https://docs.astro.build/en/guides/cms/tina-cms/) + Starter mit
->   Visual Editing
-> - Apache-2.0, Content bleibt **im Git-Repo** (versioniert, kein Ballast, keine 2. Infra)
-> - Free: TinaCloud **Free mit 2 Nutzern** ([Pricing](https://tina.io/pricing), Okt. 2026
->   vereinfacht auf ein Team-Plan) oder Self-Hosting dokumentiert; lokales Editing komplett
->   frei
+> - ✅ **Visuelles Inline-Editing in-place**: `data-caret`-Attribut an beliebige Elemente →
+>   auf der echten Seite klicken, tippen, fertig („Edit where you can see it“) — noch
+>   direkter als Tinas Sidebar-Editing. Markdown-Collections werden mit
+>   Source-Range-Write-back in die originalen `.md`-Dateien geschrieben.
+> - ✅ **Astro-nativ**: `caret()`-Integration, bleibt `output: 'static'` → **all-inkl-Deploy
+>   unverändert**, kein Node-Server nötig. Publish = Commit + Webhook → Deploy.
+> - ✅ **Kein Ballast**: Content in JSON/Markdown im eigenen Repo („never locked in a
+>   vendor database“), Studio-Admin + Seite synchron.
+> - ✅ **Free/OSS**: MIT, self-hosted, keine Cloud nötig.
+> - ✅ **Prod-Erfahrung im Haus**: Deploy-Pipeline (Webhook-Listener auf ubugrill →
+>   `caret-publish-hook.sh`) existiert bereits; bekannte Stolpersteine dokumentiert
+>   (z. B. kein Astro-`base`-Prefix-Support in 0.5/0.6).
+> - `caretize`-CLI scannt Bestands-Astro-Sites und setzt `data-caret`-Attribute
+>   interaktiv — ideal für astro.sylents.de.
 >
-> **Trade-off:** Publish = Commit → CI-Rebuild → Deploy (Minuten, nicht Sekunden) — mit
-> GitHub-Action (build + deploy nach all-inkl/Cloudflare) vollautomatisch.
+> **Risiko ehrlich benannt:** sehr jung (Feb 2026), **8 GitHub-Stars**, kleines Org
+> (web-stacked), pre-1.0, breaking changes wahrscheinlich. **Gegen Wert:** Content lebt
+> als plain Markdown/JSON im Repo → CMS-Wechsel/Absprung jederzeit ohne Datenverlust;
+> `data-caret`-Attribute sind dekorativ und entfernbar. TinaCMS bleibt die konservative
+> Alternative (13,9k★, mature, gleicher Publish-Trade-off).
 >
-> **Verworfen (final):** Headless WP (alter Ballast) • Keystatic/Pages CMS (nur Formular-
-> Editing, kein Visuell) • **StudioCMS (kein On-Page-Visual-Editing — als Wunsch-Feature auf
-> der eigenen [Roadmap](https://github.com/withstudiocms/roadmap/discussions/4),Dashboard-only;
-> Plan B falls Tina-Workflow nicht passt) • Cloudflare Workers für StudioCMS (Node-only) •
-> Vercel Hobby (kommerziell gegen ToS) • Directus (kein OSS) • Sanity/Storyblok/Prismic/
-> CloudCannon (proprietär, trotz Visual Editing).
+> **Methodik-Notiz:** CaretCMS wurde in der ersten Recherche verpasst — „best SOTA“-Suchen
+> spiegeln nur den SEO-Konsens wider (Caret: 8★, Feb 2026, nicht mal in der offiziellen
+> Astro-CMS-Liste). Gefunden erst durch Nachfrage nach dem eigenen Setup in
+> `../baumschneider/`. Lektion: bei Projektrecherche zuerst eigenes Umfeld (Sibling-Projekte,
+> AGENTS.md-Netzwerk) auf Prior Art prüfen, dann das Web — und Discovery mit alternativen
+> Query-Formen (GitHub-Topics, npm, „inline editing Astro“) erweitern, bevor man im
+> einmal gefundenen Kandidaten-Frame verifiziert.
+>
+> Verworfen (final): Headless WP (Ballast) • Keystatic/Pages/Sveltia/Decap (kein visuelles
+> Editing) • StudioCMS (Live-Preview = offener Roadmap-Wunsch, Dashboard-only) • Payload/
+> Strapi/Directus (Backend-Last/kein OSS) • Cloudflare Workers für StudioCMS • Vercel Hobby
+> (ToS) • Sanity/Storyblok/Prismic/CloudCannon (proprietär).
 >
 > **🔎 Web-Check (17.11.2026), Primär-/Praxisquellen:**
 > - **Headless WP + Astro ist 2026 ein ausgereifter Standardweg** — die offiziellen
@@ -82,7 +94,8 @@ Option unten.
 
 | CMS | Visuelles Editing ⭐ | WP-Feeling | Astro-nativ | Free/OSS | Sofort live | Läuft wo | Status/Aktivität |
 |---|---|---|---|---|---|---|---|
-| **TinaCMS** | ✅ **Click-to-edit auf der echten Seite** (`@tinacms/astro`) | ●●●○ | ✅ Default-Starter | ✅ Apache-2.0 | ❌ Rebuild (Min.) | Statisch; TinaCloud free (2 User)/self-host | 13,9k★ aktiv — **Empfehlung** |
+| **CaretCMS** ⭐ neu | ✅ **Inline-Editing in-place** (`data-caret`-Attribut, click-to-edit auf der Seite, [Repo](https://github.com/web-stacked/caretcms)) | ●●●● | ✅ Integration, bleibt `output: 'static'` | ✅ MIT, self-hosted | ⚠️ Publish = Commit + Webhook → Deploy (sofort live nur im Server-Modus) | nichts (Content im Repo; optional Webhook-Listener) | 8★ ⚠️ sehr jung (Feb 2026), **aber Prod-Erfahrung in baumschneider** → **Empfehlung** |
+| **TinaCMS** | ✅ **Click-to-edit auf der echten Seite** (`@tinacms/astro`) | ●●●○ | ✅ Default-Starter | ✅ Apache-2.0 | ❌ Rebuild (Min.) | Statisch; TinaCloud free (2 User)/self-host | 13,9k★ aktiv — konservative Alternative |
 | **ApostropheCMS** | ✅ In-Context-Editing — **aber nur auf Apostrophe-eigenen Seiten** (mit Astro-Headless eingeschränkt) | ●●●● | ⚠️ Guide (Stub) | ⚠️ MIT-Core, Premium-Module $ | ✅ | Node + DB | 4,7k★ aktiv |
 | **StudioCMS** | ❌ Dashboard-WYSIWYG; Live-Preview = offener [Roadmap-Wunsch](https://github.com/withstudiocms/roadmap/discussions/4) | ●●●○ | ✅✅ gebaut für Astro | ✅ MIT | ✅ | Node + libSQL/MySQL/Postgres | 844★, pre-1.0 |
 | **Payload** | ⚠️ Live-Preview-iFrame im Admin, kein Click-to-edit | ●●●○ | ⚠️ REST/Beispiel | ✅ MIT | ✅ (Backend) | Next.js-Backend + DB nötig | 45,9k★ sehr aktiv |

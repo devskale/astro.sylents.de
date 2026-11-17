@@ -1,45 +1,36 @@
 ---
+import { getCollection } from 'astro:content';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import '../styles/tokens.css';
 
-const perks = [
-  {
-    title: 'Sinnstiftend',
-    desc: 'Du arbeitest an emissionsfreier Mobilität auf dem Wasser – mit echtem Effekt für Natur und Menschen.',
-    icon: '<path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/><path d="M12 9c2 2 4 2 4 2"/>'
-  },
-  {
-    title: 'Hands-on & direkt',
-    desc: 'Kurze Entscheidungswege, flache Hierarchien: das beste Argument zählt, nicht, wer es vorträgt.',
-    icon: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2-2 2.5-2.5z"/>'
-  },
-  {
-    title: 'Wachstum',
-    desc: 'Ein junger Scale-up am Übergang vom Prototyp zur Serie – mit viel Raum für Eigenverantwortung.',
-    icon: '<path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/>'
-  },
-  {
-    title: 'Starkes Team',
-    desc: 'Spezialisten aus Elektromobilität, Hydrodynamik und Embedded Systems, die voneinander lernen.',
-    icon: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 11a3 3 0 0 0 0-6"/><path d="M15 15c3 0 5.5 2 5.5 5"/>'
-  },
+// Karriere-Texte aus der Content-Collection (career-de); SVG-Icons bleiben
+// als Präsentation im Code.
+const entry = (await getCollection('career')).find((e) => e.id === 'career-de')?.data;
+if (!entry) throw new Error('src/content/career/career-de.md fehlt');
+
+const perkIcons = [
+  '<path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/><path d="M12 9c2 2 4 2 4 2"/>',
+  '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2-2 2.5-2.5z"/>',
+  '<path d="M3 17l6-6 4 4 8-8"/><path d="M17 7h4v4"/>',
+  '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 11a3 3 0 0 0 0-6"/><path d="M15 15c3 0 5.5 2 5.5 5"/>',
 ];
+const perks = entry.perks.map((p, i) => ({ ...p, icon: perkIcons[i] }));
 ---
 
-<SiteLayout title="Karriere | Sylents" description="Karriere bei Sylents – arbeite an emissionsfreien Jetantrieben für Freizeitboote.">
+<SiteLayout title={entry.meta.title} description={entry.meta.description}>
   <section class="page-hero">
     <div class="container">
       <span class="breadcrumb">Karriere</span>
-      <h1>Gestalte die Mobilität auf dem Wasser mit.</h1>
-      <p>Wir entwickeln elektrische Jetantriebe für Freizeitboote und wachsen. Wenn du an emissionsfreier Technologie arbeiten willst, die wirklich bewegt – dann passe zu uns.</p>
+      <h1>{entry.hero.h1}</h1>
+      <p>{entry.hero.text}</p>
     </div>
   </section>
 
   <!-- Perks -->
   <section class="perks">
     <div class="container">
-      <span class="eyebrow">Warum Sylents</span>
-      <h2>Was dich erwartet.</h2>
+      <span class="eyebrow">{entry.perksEyebrow}</span>
+      <h2>{entry.perksTitle}</h2>
       <div class="perks-grid">
         {perks.map((p) => (
           <div class="perk-card">
@@ -57,32 +48,20 @@ const perks = [
   <!-- Open positions -->
   <section class="jobs">
     <div class="container">
-      <span class="eyebrow">Offene Stellen</span>
-      <h2>Aktuelle Möglichkeiten.</h2>
+      <span class="eyebrow">{entry.jobsEyebrow}</span>
+      <h2>{entry.jobsTitle}</h2>
       <div class="jobs-list">
-        <a href="mailto:hi@sylents.de?subject=Bewerbung%20CFD" class="job-row">
-          <div>
-            <h3>Entwicklungsingenieur CFD (m/w/d)</h3>
-            <p>Werkstudent / Abschlussarbeit · Teningen oder remote</p>
-          </div>
-          <span class="job-arrow">→</span>
-        </a>
-        <a href="mailto:hi@sylents.de?subject=Bewerbung%20Technische%20Assistenz" class="job-row">
-          <div>
-            <h3>Technische Assistenz (m/w/d)</h3>
-            <p>Vollzeit · Teningen</p>
-          </div>
-          <span class="job-arrow">→</span>
-        </a>
-        <a href="mailto:hi@sylents.de?subject=Initiativbewerbung" class="job-row">
-          <div>
-            <h3>Initiativbewerbung</h3>
-            <p>Du passt in kein Raster? Erzähl uns, was du beitragen kannst.</p>
-          </div>
-          <span class="job-arrow">→</span>
-        </a>
+        {entry.jobs.map((j) => (
+          <a href={`mailto:${entry.email}?subject=${encodeURIComponent(j.subject)}`} class="job-row">
+            <div>
+              <h3>{j.title}</h3>
+              <p>{j.meta}</p>
+            </div>
+            <span class="job-arrow">→</span>
+          </a>
+        ))}
       </div>
-      <p class="jobs-note">Wir freuen uns auf deine Bewerbung an <a href="mailto:hi@sylents.de">hi@sylents.de</a>.</p>
+      <p class="jobs-note">{entry.note} <a href={`mailto:${entry.email}`}>{entry.email}</a>.</p>
     </div>
   </section>
 </SiteLayout>

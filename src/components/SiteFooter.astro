@@ -1,0 +1,96 @@
+---
+// Globale Fußzeile — liest Texte/Firmendaten aus der settings-Collection
+// (settings-de / settings-en). Ersetzt die früher duplizierten Inline-Footer.
+import { getCollection } from 'astro:content';
+
+interface Props {
+  locale?: 'de' | 'en';
+}
+
+const locale = Astro.props.locale ?? 'de';
+const settings = (await getCollection('settings')).find((e) => e.id === `settings-${locale}`)?.data;
+if (!settings) throw new Error(`src/content/settings/settings-${locale}.md fehlt`);
+
+const telHref = `tel:${settings.company.tel.replace(/[\s-]/g, '')}`;
+const legalLinks = [
+  { href: locale === 'en' ? '/en/imprint/' : '/impressum/', label: settings.footer.imprint },
+  { href: locale === 'en' ? '/en/privacy/' : '/datenschutz/', label: settings.footer.privacy },
+  { href: locale === 'en' ? '/en/terms/' : '/agb/', label: settings.footer.terms },
+];
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-col footer-brand">
+      <img src="/sylents-2c_1.svg" alt="Sylents" class="footer-logo" />
+      <p class="footer-tagline">{settings.footer.tagline}</p>
+      <p class="footer-desc">{settings.footer.desc}</p>
+      <div class="footer-contact">
+        <a href={telHref}>{settings.company.tel}</a>
+        <a href={`mailto:${settings.company.email}`}>{settings.company.email}</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>{settings.footer.locations}</h4>
+      <p><strong>{settings.footer.hq}</strong><br />{settings.company.street}<br />{settings.company.city}</p>
+    </div>
+    <div class="footer-col">
+      <h4>{settings.footer.legal}</h4>
+      <p>{settings.company.register}<br />{settings.company.hrb}</p>
+      <p><strong>UID</strong> {settings.company.uid}</p>
+      <p><strong>IBAN</strong> {settings.company.iban}</p>
+      <p><strong>BIC</strong> {settings.company.bic}</p>
+      <nav class="footer-legal">
+        {legalLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <span>© {new Date().getFullYear()} {settings.company.name}</span>
+      <span>{settings.footer.bottom}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Footer (vorher dupliziert in SiteLayout is:global + index.astro scoped) */
+  .site-footer {
+    margin-top: auto;
+    border-top: 1px solid var(--color-border);
+    background: #0d1f24;
+    color: #c8d6da;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 3rem;
+    padding: 64px 15px 48px;
+  }
+  .footer-brand { display: flex; flex-direction: column; gap: 0.5rem; }
+  .footer-logo { width: 116px; height: 34px; margin: 0 0 0.75rem; filter: brightness(0) invert(1); }
+  .footer-tagline { color: #00bcd4; font-weight: 500; font-size: 0.9rem; }
+  .footer-desc { color: #7d9298; font-size: 0.85rem; line-height: 1.6; max-width: 280px; margin-bottom: 0.75rem; }
+  .footer-contact { display: flex; flex-direction: column; gap: 0.35rem; }
+  .footer-contact a { color: #ffffff; font-size: 0.9rem; }
+  .footer-contact a:hover { color: var(--color-primary); }
+  .footer-col h4 {
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: #00bcd4; margin-bottom: 1rem; font-weight: 600;
+  }
+  .footer-col p { margin-bottom: 0.85rem; font-size: 0.88rem; line-height: 1.6; color: #c8d6da; }
+  .footer-col p strong { color: #ffffff; }
+  .footer-legal { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.5rem; }
+  .footer-legal a { color: #c8d6da; font-size: 0.88rem; }
+  .footer-legal a:hover { color: var(--color-primary); }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding: 18px 0; }
+  .footer-bottom-inner {
+    max-width: 1140px; margin: 0 auto; padding: 0 15px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.82rem; color: #7d9298;
+  }
+  @media (max-width: 800px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; padding: 48px 15px 32px; }
+    .footer-bottom-inner { flex-direction: column; gap: 0.4rem; }
+  }
+</style>

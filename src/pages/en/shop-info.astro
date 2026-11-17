@@ -1,25 +1,31 @@
 ---
+import { getCollection } from 'astro:content';
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import '../../styles/tokens.css';
 
 const formPath = '/en/shop-info/';
+
+// Shop pre-registration: texts from the content collection (shopinfo-en).
+const entry = (await getCollection('shopinfo')).find((e) => e.id === 'shopinfo-en')?.data;
+if (!entry) throw new Error('src/content/shopinfo/shopinfo-en.md fehlt');
+const n = entry.notify;
 ---
 
-<SiteLayout lang="en" title="Shop | Sylents" description="The Sylents shop is in the making – leave your email address and we will notify you as soon as the shop is available.">
+<SiteLayout lang="en" title={entry.meta.title} description={entry.meta.description}>
   <section class="page-hero">
     <div class="container">
       <span class="breadcrumb">Shop</span>
-      <h1>The Sylents shop is in the making.</h1>
-      <p>Our products will soon be orderable directly online – leave your email address and we will notify you as soon as the shop is available.</p>
+      <h1>{entry.hero.h1}</h1>
+      <p>{entry.hero.text}</p>
     </div>
   </section>
 
   <section class="notify-section">
     <div class="container notify-grid">
       <div class="notify-body">
-        <span class="eyebrow">Pre-register</span>
-        <h2>First come, first out on the water.</h2>
-        <p class="lead">Leave your email address – we will personally notify you as soon as the shop launches. Look forward to early-bird discounts.</p>
+        <span class="eyebrow">{n.eyebrow}</span>
+        <h2>{n.title}</h2>
+        <p class="lead">{n.lead}</p>
 
         <form class="notify-form" action="/shop-notify.php" method="post">
           <input type="hidden" name="lang" value="en" />
@@ -28,21 +34,21 @@ const formPath = '/en/shop-info/';
           <input type="text" name="fax" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <label class="field">
-            <span>Email address *</span>
-            <input type="email" name="email" required placeholder="your@email.com" autocomplete="email" />
+            <span>{n.emailLabel}</span>
+            <input type="email" name="email" required placeholder={n.emailPlaceholder} autocomplete="email" />
           </label>
 
           <label class="consent">
             <input type="checkbox" name="consent" value="1" required />
-            <span>I accept the <a href="/en/privacy/">privacy policy</a> and want to be notified as soon as the shop is available.*</span>
+            <span>{n.consentPrefix} <a href="/en/privacy/">{n.consentLinkText}</a> {n.consentSuffix}</span>
           </label>
 
-          <button type="submit" class="btn">Notify me</button>
+          <button type="submit" class="btn">{n.submit}</button>
         </form>
 
         <div class="form-msg ok" id="msg-ok" hidden>
-          <strong>Thank you!</strong> We will notify you as soon as the shop is available.
-          <span id="msg-dup" hidden>This email address is already registered.</span>
+          <strong>{n.okTitle}</strong> {n.okText}
+          <span id="msg-dup" hidden>{n.dupText}</span>
         </div>
         <div class="form-msg err" id="msg-err" hidden></div>
       </div>
@@ -54,7 +60,7 @@ const formPath = '/en/shop-info/';
   </section>
 </SiteLayout>
 
-<script is:inline>
+<script is:inline define:vars={{ errEmail: n.errEmail, errConsent: n.errConsent, errBot: n.errBot }}>
   // Feedback after redirect from the PHP endpoint (?ok=1 / ?dup=1 / ?error=…)
   (function () {
     var p = new URLSearchParams(location.search);
@@ -70,9 +76,9 @@ const formPath = '/en/shop-info/';
       var err = document.getElementById('msg-err');
       if (err) {
         var texts = {
-          email: 'Please enter a valid email address.',
-          consent: 'Please accept the privacy policy.',
-          bot: 'Something went wrong. Please try again.'
+          email: errEmail,
+          consent: errConsent,
+          bot: errBot
         };
         err.textContent = texts[p.get('error')] || texts.bot;
         err.hidden = false;

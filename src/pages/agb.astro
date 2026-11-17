@@ -1,68 +1,21 @@
 ---
+import { getCollection } from 'astro:content';
 import SiteLayout from '../layouts/SiteLayout.astro';
+
+// Rechtstext aus der Content-Collection (Body = HTML 1:1 aus der alten Page).
+const entry = (await getCollection('legal')).find((e) => e.id === 'agb-de');
+if (!entry) throw new Error('src/content/legal/agb-de.md fehlt');
 ---
 
-<SiteLayout title="AGB | Sylents" description="Allgemeine Geschäftsbedingungen von Sylents.">
+<SiteLayout title={entry.data.title} description={entry.data.description}>
   <section class="page-hero">
     <div class="container">
-      <span class="breadcrumb">Rechtliches</span>
-      <h1>AGB</h1>
+      <span class="breadcrumb">{entry.data.breadcrumb}</span>
+      <h1>{entry.data.h1}</h1>
     </div>
   </section>
 
   <div class="prose">
-    <p>VERVE Water Mobility GmbH<br />Teningen, Deutschland</p>
-
-    <h2>1. Allgemeines, Vertragsumfang und Gültigkeit</h2>
-    <p>Die allgemeinen Geschäftsbedingungen (AGB) gelten für alle Dienstleistungen und Lieferungen aller Art, die VERVE Water Mobility GmbH als Auftragnehmer ("AN") im Rahmen des mit dem Auftraggeber ("AG") geschlossenen Vertragsverhältnisses erbringt. Diese AGB gelten in der jeweils gültigen Fassung auch für alle gegenwärtigen und zukünftigen Dienstleistungen und Lieferungen, die der AN gegenüber dem AG erbringt, auch wenn im Einzelfall bei Vertragsabschluss nicht ausdrücklich auf sie Bezug genommen wird. Die AGB des AG werden für das Vertragsverhältnis und die gesamte Geschäftsbeziehung ausgeschlossen und sind nicht Vertragsinhalt. Dies gilt auch dann, wenn der AN auf ein Schreiben des AG, welcher Art auch immer, dem AGB des AG angeschlossen sind, nicht reagiert.</p>
-
-    <h2>2. Angebot und Annahme</h2>
-    <p>Angebote des AN sind grundsätzlich freibleibend. Der AN behält sich das Recht vor, Angebote des AG nach freier Wahl anzunehmen oder abzulehnen. Der Vertrag kommt durch schriftliche Annahme der Bestellung des AG durch den AN zustande, wobei der AN auch berechtigt ist, den Vertrag schlüssig durch Aufnahme der nach dem Angebot des AG zu erbringenden Leistung bzw. Lieferung zu schließen. Änderungen und Ergänzungen des Auftrags bedürfen der schriftlichen Bestätigung des AN, um Gegenstand des vorliegenden Vertragsverhältnisses zu werden. Bei einer Auftragsänderung kann die Liefer-/Leistungsfrist um einen angemessenen Zeitraum angepasst werden. Dem AG zumutbare sachlich gerechtfertigte geringfügige Änderungen der Leistungsausführung durch den AN gelten als vorweg genehmigt.</p>
-
-    <h2>3. Leistung und Lieferung, Mitwirkungspflicht des AG</h2>
-    <p>Der AN behält sich das Recht vor, Leistungen und Lieferungen oder Teile davon durch von ihm beauftragte Dritte im In- und inner- wie außereuropäischen Ausland ausführen und/oder auch direkt durch diese an den AG liefern zu lassen. Grundlage für die Erbringung von Leistungen und Lieferungen ist die schriftliche Leistungsbeschreibung. Die Durchführung der jeweils in der Leistungsbeschreibung definierten Leistung bzw. Lieferung erfolgt, sofern nichts anderes vereinbart ist, am Erfüllungsort, dies innerhalb der normalen Arbeitszeit, Montag bis Freitag von 9:00 bis 17:00 Uhr. Werden Leistungen und Lieferungen auf Wunsch des AG außerhalb der normalen Arbeitszeit erbracht, werden die Mehrkosten gesondert in Rechnung gestellt. Der AN ist zu Teillieferungen oder Vorauslieferungen sowie -leistung berechtigt. Der AG verpflichtet sich, alle für die zu erbringenden Leistungen und Lieferungen notwendigen Informationen, Unterlagen und Hilfsmittel rechtzeitig zur Verfügung zu stellen sowie alle Maßnahmen zu unterstützen, die für die Erbringung der Leistung und Lieferung durch den AN notwendig sind (vgl. auch Punkt 5). Wenn nichts anderes vereinbart ist, gilt die Lieferung von Waren als EXW gem. INCOTERMS® 2010 verkauft.</p>
-
-    <h2>4. Abnahme, Übergang der Gefahr</h2>
-    <p>Die Abnahme der Leistung bzw. Lieferung wird vom AG auf dem vom AN erstellten Freigabeprotokoll (Abnahmebestätigung) bestätigt. Mängel sind vom AG darauf schriftlich zu vermerken oder unverzüglich schriftlich zu melden (vgl. auch Punkt 10), widrigenfalls die Leistung bzw. Lieferung als mangelfrei übernommen gilt. Bei Lieferungen aller Art ist der AG verpflichtet, die gelieferten Produkte ehest möglich zu prüfen und allfällige Mängel spätestens innerhalb von 4 Wochen nach Erhalt der Ware schriftlich und detailliert bekannt zu geben. Das Vorliegen von geringfügigen Mängeln berechtigt den AG nicht zur Verweigerung der Abnahme. Ist die Funktionsfähigkeit der erbrachten Leistung bzw. Lieferung weitgehend gegeben oder benützt sie der AG, so gilt die Leistung bzw. Lieferung als abgenommen. Mit der Abnahme der Leistung bzw. Lieferung oder der Abgabe zur Versendung dieser an einen Dritten geht die Gefahr auf den AG über. Wird die geschuldete Leistung dem AG per elektronischer Datenübermittlung zur Verfügung gestellt, so gilt die Leistung im Zeitpunkt der nachweislichen Datenübermittlung als erbracht. Der Zeitpunkt der Datenübermittlung ist entscheidend.</p>
-
-    <h2>5. Erfüllungstermin</h2>
-    <p>Die Einhaltung des Erfüllungstermins ist nur unter der Erfüllung der erforderlichen Mitwirkungsverpflichtung des AG möglich. Verzögerungen, die durch ein Verhalten des AG auftreten, sind vom AN nicht zu vertreten. Allfällige Mehrkosten sind vom AG zu tragen. Dem AG steht wegen Überschreitung der in Aussicht gestellten Termine aber weder das Recht auf Rücktritt noch auf Schadenersatz zu. Bei langfristigen Verträgen und/oder wiederkehrenden Leistungen ist der AG verpflichtet, rechtzeitig eine Vorausschau (forecast) zu geben.</p>
-
-    <h2>6. Preise</h2>
-    <p>Alle Preise gemäß der Leistungsbeschreibung verstehen sich mangels anderer Vereinbarung ab Erfüllungsort in Euro und sind im Zweifel netto. Die Kosten für Fahrt und Wegzeiten für die den Auftrag ausführenden Personen oder Dritte werden vom AG gesondert getragen. Für Leistungen, die auf Wunsch des AG außerhalb des Erfüllungsorts erbracht werden, trägt der AG die zusätzlichen Kosten des Aufenthalts der mit der Ausführung der Leistung beauftragten Personen des AN. Die Preise gelten für das vorliegende Vertragsverhältnis und – soweit nichts anderes vereinbart wird – auch für sonstige im Rahmen der Geschäftsbeziehung erbrachte oder zu erbringende Leistungen und Lieferungen des AN. Die Kosten für Approbationen und Lizenzierungen werden gesondert in Rechnung gestellt. Kosten für Immaterialgüterrechte (insb. nach dem PatentG, SchutzzertifikatG, GebrauchsmusterG, HalbleiterschutzG, UrheberrechtsG odgl.), welche für die vom AN zu erbringende Leistung bzw. Lieferung erforderlich sind, werden gesondert in Rechnung gestellt und sind im Zweifel im vereinbarten Entgelt nie enthalten. Der AN ist berechtigt, bei nach Vertragsabschluss eintretenden Steigerungen von Lohn- und Materialkosten bzw. sonstigen Kosten und Abgaben, die in der Leistungsbeschreibung angeführten Beträge entsprechend zu erhöhen und dem AG ab dem auf die Erhöhung folgenden Monatsbeginn anzulasten.</p>
-
-    <h2>7. Zahlungsbedingungen</h2>
-    <p>Sofern nicht anders vereinbart, sind sämtliche Lieferungen und Leistungen des AN im Voraus zu bezahlen. Die vom AN gelegten Rechnungen sind binnen 14 Tagen ohne Abzug und spesenfrei auf das in der Rechnung angeführte Konto zu zahlen. Die Aufrechnung gegen Forderungen des AN aus welchem Grund auch immer ist ausgeschlossen. Vom AG geltend gemachte Ansprüche aller Art (insb. wegen Verzugs oder Gewährleistung) befreien nicht von der Zahlungspflicht. Dem AG steht wegen mangelhafter Leistungserbringung kein Zurückbehaltungsrecht des geschuldeten Entgelts zu. Die Verzugszinsen bei Zahlungsverzug betragen 9% p.a.</p>
-
-    <h2>8. Eigentumsvorbehalt</h2>
-    <p>Wird ein Zahlungsziel gewährt, bleiben gelieferte Produkte und erbrachte Leistungen bis zur vollständigen Bezahlung des Kaufpreises bzw. Werklohn inklusive allfälliger Verzugszinsen und Betreibungskosten Eigentum des AN.</p>
-
-    <h2>9. Urheberrecht und Nutzung</h2>
-    <p>Alle Immaterialgüterrechte an erbrachten Leistungen bzw. Lieferungen stehen dem AN bzw. dessen Lizenzgebern zu. Der AG erhält ausschließlich das Recht, nach vollständiger Bezahlung die Leistungen bzw. Lieferungen vertragsgemäß zu nutzen. Der AG erwirbt lediglich eine Nutzungsbewilligung. Wird in welcher Form auch immer geschützte Software oder Immaterialgüterrechte an den AG weitergegeben, so ist der AG verantwortlich, für eine der übertragenen Nutzungsbewilligung entsprechende Verwendung zu sorgen und den AN für alle Ersatzansprüche Dritter klag- und schadlos zu halten. Patente, die der AN im Zuge oder anlässlich der Leistungserbringung erfindet, stehen allein dem AN zu. Der AN ist nicht zur Erfindung beauftragt. Der AG darf Source-Codes ohne Zustimmung nicht weitergeben.</p>
-
-    <h2>10. Schadenersatz und Gewährleistung</h2>
-    <p>Der AN haftet für Schäden nur bei grober Fahrlässigkeit. Der Ersatz von Folgeschäden, Stillstandskosten, bloßen Vermögensschäden, entgangenem Gewinn, nicht erzielten Ersparnissen, Zinsverlusten und von Schäden aus Ansprüchen Dritter gegen den AN ist in jedem Fall, soweit gesetzlich zulässig, ausgeschlossen. Im Fall von Datenverlusten haftet der AN nur, wenn der AG die Datenbestände regelmäßig mindestens einmal täglich nachweisbar gesichert hat. Ansonsten wird – mit Ausnahme von Vorsatz – eine Haftung ausgeschlossen. Schadenersatzansprüche sind binnen einer Frist von 3 Monaten ab Kenntnis von Schaden und Schädiger bei sonstigem Verlust geltend zu machen. Schadenersatzansprüche verjähren jedenfalls (absolut) 2 (zwei) Jahre nach Leistungserbringung.</p>
-    <p>Gewährleistung wird mit Ausnahme der im Freigabeprotokoll (Abnahmebestätigung) laut Punkt 4 angeführten Mängel ausgeschlossen. Für die im Freigabeprotokoll angeführten Mängel gilt: Die Dauer der Gewährleistung beträgt 3 Monate ab Abnahme. Im Falle der Gewährleistung steht dem AG nur das Recht zur Verbesserung zu. Das Recht zur Wandlung und Preisminderung wird ausgeschlossen. Dem AN steht es frei, mangelhafte Leistungen bzw. Lieferungen gegen mangelfreie auszutauschen. Die Mangelbehebung erfolgt am Erfüllungsort. Der AN übernimmt keine Gewähr für Fehler, Störungen oder Schäden durch unsachgemäße Bedienung durch den AG, für durch den AG vorgenommene Veränderungen an der erbrachten Leistung aufgetretene Fehler, ungeeignete Organisationsmittel und Datenträger sowie für durch Transportschäden veranlasste Fehler.</p>
-
-    <h2>11. Geheimhaltung</h2>
-    <p>Der AN ist zur Geheimhaltung aller vom AG erteilten Informationen verpflichtet. Der AN ist auch zur Geheimhaltung seiner Tätigkeit verpflichtet, wenn und solange der AG an dieser Geheimhaltung ein berechtigtes Interesse hat. Nach Durchführung des Auftrages ist der AN berechtigt, das vertragsgegenständliche Werk gänzlich oder teilweise zu Werbezwecken zu veröffentlichen, sofern vertraglich nichts anderes vereinbart ist.</p>
-
-    <h2>12. Abtretungsverbot</h2>
-    <p>Der AG ist nicht berechtigt, Ansprüche gegenüber dem AN abzutreten.</p>
-
-    <h2>13. Erfüllungsort</h2>
-    <p>Erfüllungsort ist mangels anderer Vereinbarung am Geschäftssitz des AN.</p>
-
-    <h2>14. Datenschutz</h2>
-    <p>Der AG verpflichtet sich, die vom AN hergestellte Software nur in Übereinstimmung mit den jeweils für den AG geltenden Datenschutzbestimmungen anzuwenden. Der AG hält den AN diesbezüglich betreffend Ansprüche Dritter schad- und klaglos.</p>
-
-    <h2>15. Deutsche Fassung</h2>
-    <p>Die deutsche Fassung dieser AGB geht etwaigen weiteren Fassungen vor.</p>
-
-    <h2>16. Vorbehaltsklausel</h2>
-    <p>Die Vertragserfüllung seitens des AN steht unter dem Vorbehalt, dass der Erfüllung keine Hindernisse aufgrund von nationalen oder internationalen (Re-)Exportbestimmungen, insbesondere keine Embargos und/oder sonstige Sanktionen, entgegenstehen.</p>
-
-    <h2>17. Anwendbares Recht und Gerichtsstand</h2>
-    <p>Für den Fall allfälliger Rechtsstreitigkeiten aus oder im Zusammenhang mit diesem Vertragsverhältnis wird die Zuständigkeit des die Handelsgerichtsbarkeit in Freiburg/Breisgau ausübenden Gerichts vereinbart. Es gilt deutsches Recht mit Ausnahme seiner Kollisionsnormen und des Übereinkommens der Vereinten Nationen über Verträge über den internationalen Warenkauf.</p>
+    <Fragment set:html={entry.body} />
   </div>
 </SiteLayout>
