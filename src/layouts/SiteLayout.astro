@@ -25,7 +25,7 @@ const nav = [
   { href: lang === 'en' ? '/en/products/' : '/produktseite/', label: t('nav.products') },
   { href: lang === 'en' ? '/en/career/' : '/karriere/', label: t('nav.career') },
   { href: lang === 'en' ? '/en/team/' : '/team/', label: t('nav.team') },
-  { href: 'https://www.sylents.de/shop/', label: t('nav.shop') },
+  { href: lang === 'en' ? '/en/shop-info/' : '/shop-info/', label: t('nav.shop') },
 ];
 const switchTo = altLangPath(Astro.url);
 const switchLabel = switchTo.lang === 'en' ? 'EN' : 'DE';

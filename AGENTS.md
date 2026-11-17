@@ -12,6 +12,27 @@ pnpm build     # build → dist/
 ./deploy.sh    # build + scp dist/ to all-inkl (astro.sylents.de)
 ```
 
+## Shop-Voranmeldung (Email-Registry)
+
+- Nav „Shop" → `/shop-info/` (DE) / `/en/shop-info/` (EN) — interne Coming-Soon-Seite,
+  solange der WP-Shop pausiert. **Pfad `/shop/` nie in Astro anlegen** (kollidiert live
+  mit WordPress unter sylents.de/shop/).
+- Formular → `public/shop-notify.php` (wird mitdeployt): speichert
+  `sylents.de/shop-notify-data/registrations.csv` (**oberhalb** des Docroots, per HTTP
+  nicht abrufbar) und mailt hi@sylents.de. Duplikat-Emails werden erkannt.
+- Liste ansehen: `ssh all-inkl cat /www/htdocs/w01973ad/sylents.de/shop-notify-data/registrations.csv`
+
+## Dev-Server starten/stoppen
+
+```bash
+./dev.sh       # Dev-Server im Vordergrund auf Port 4323 (eigene Pane, Ctrl+C = stop)
+./dev.sh down  # killt einen hängengebliebenen Dev-Server auf Port 4323
+```
+
+**Regel: NIEMALS `nohup` oder `&` für den Dev-Server** — das erzeugt
+Zombie-/Waisen-Prozesse, die Ports blockieren. Immer in einer eigenen
+Terminal-Pane im Vordergrund laufen lassen.
+
 ## Design context
 
 **Read [`PRODUCT.md`](PRODUCT.md) before any design work.** It captures the project's

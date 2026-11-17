@@ -3,11 +3,14 @@ import SiteLayout from '../../layouts/SiteLayout.astro';
 import '../../styles/tokens.css';
 
 const products = [
-  { id: 'outboard', name: 'Sylents outboard', tag: 'Light. Mobile. Ready in minutes.', power: '1.0–4.5 kW', img: '/products/outboard/frontal.png',
+  { id: 'outboard', name: 'Sylents outboard', tag: 'Light. Mobile. Ready in minutes.', power: '1.0–4.5 kW', img: '/outboard.png',
+    gallery: ['/products/outboard/frontal.png','/products/outboard/seitlich-re.png','/products/outboard/eingeklappt.png','/products/outboard/display.png','/products/outboard/gondel.png','/products/outboard/boc.png'],
     points: ['Just 14.6 kg incl. battery – fits any roof and transom','Closed jet drive: no propeller, no injury risk','Up to 50 minutes of riding under full load','Blockage-free through reeds, sand and shallow shores'] },
   { id: 'inboard', name: 'Sylents inboard', tag: 'Integrated. Low-maintenance. For sheltered waters.', power: '1–10 kW', img: '/inboard.png',
+    gallery: ['/products/inboard-jet.jpg','/products/inboard-bench.png'],
     points: ['Integrated, water-cooled electric drive up to 5,000 rpm','Coordinated overall system with a safety concept','All components matched and waterproof','An economical alternative for intensive use'] },
   { id: 'pod', name: 'Sylents pod drive', tag: 'Compact. Space-saving. For shallow waters.', power: '1–10 kW', img: '/pod.png',
+    gallery: ['/products/pod-studio.jpg','/products/pod-render.png','/products/pod-prototype.png'],
     points: ['Lightweight, space-saving pod drive for sailboats, houseboats and yachts','Complete energy management from a single source','Ideal for shallow waters, reed beds and harbours','Closed, indestructible drive system'] },
 ];
 ---
@@ -33,9 +36,36 @@ const products = [
     </ul>
   </div></div></section>
 
+  <!-- Experience it — water video (YouTube, free hosting) -->
+  <section class="water-video">
+    <div class="water-video-media">
+      <div id="heroPlayer"></div>
+      <div class="water-video-overlay"></div>
+    </div>
+    <div class="water-video-tag">sylents riding fun</div>
+  </section>
+
   {products.map((p, i) => (
     <section id={p.id} class="product-detail" data-reverse={i % 2 === 1}><div class="container detail-grid">
-      <div class="detail-visual"><img src={p.img} alt={p.name} /></div>
+      <div class="detail-visual">
+        {
+          p.gallery ? (
+            <div class="gallery" data-gallery>
+              <div class="gallery-track">
+                <img src={p.img} alt={p.name} class="gallery-slide is-active" />
+                {p.gallery.map((g) => (
+                  <img src={g} alt={p.name} class="gallery-slide" loading="lazy" />
+                ))}
+              </div>
+              <button class="gallery-nav gallery-prev" type="button" aria-label="Previous image" data-prev>‹</button>
+              <button class="gallery-nav gallery-next" type="button" aria-label="Next image" data-next>›</button>
+              <div class="gallery-dots"></div>
+            </div>
+          ) : (
+            <img src={p.img} alt={p.name} />
+          )
+        }
+      </div>
       <div class="detail-body">
         <span class="detail-tag">{p.tag}</span>
         <h2>{p.name}</h2>
@@ -46,6 +76,80 @@ const products = [
     </div></section>
   ))}
 </SiteLayout>
+
+<script is:inline define:vars={{ heroVideoId: 'UUnTM2u_i5o' }}>
+  // Water video (YouTube IFrame API) — autoplay muted loop
+  const heroWrap = document.querySelector('.water-video-media');
+  let heroPlayer = null;
+
+  function getCoverSize() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const aspect = 16 / 9;
+    if (vw / vh > aspect) return { w: vw, h: vw / aspect };
+    return { w: vh * aspect, h: vh };
+  }
+
+  function resizeHeroPlayer() {
+    if (!heroPlayer || !heroPlayer.setSize) return;
+    const { w, h } = getCoverSize();
+    heroPlayer.setSize(Math.round(w), Math.round(h));
+  }
+  window.addEventListener('resize', resizeHeroPlayer);
+
+  window.onYouTubeIframeAPIReady = function () {
+    if (!heroWrap) return;
+    const { w, h } = getCoverSize();
+    heroPlayer = new YT.Player('heroPlayer', {
+      videoId: heroVideoId,
+      width: Math.round(w),
+      height: Math.round(h),
+      playerVars: {
+        autoplay: 1, loop: 1, playlist: heroVideoId, controls: 0,
+        modestbranding: 1, rel: 0, fs: 0, disablekb: 1, playsinline: 1, iv_load_policy: 3,
+      },
+      events: {
+        onReady: (e) => { e.target.mute(); e.target.playVideo(); e.target.setPlaybackQuality('hd720'); },
+        onStateChange: (e) => {
+          if (e.data === YT.PlayerState.PLAYING) e.target.setPlaybackQuality('hd720');
+          else if (e.data === YT.PlayerState.ENDED) e.target.playVideo();
+        },
+      },
+    });
+  };
+
+  const tag = document.createElement('script');
+  tag.src = 'https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+</script>
+
+<script>
+  // Product image slideshow
+  document.querySelectorAll('[data-gallery]').forEach((gallery) => {
+    const slides = Array.from(gallery.querySelectorAll('.gallery-slide'));
+    const dotsWrap = gallery.querySelector('.gallery-dots');
+    if (slides.length < 2) return;
+
+    let current = 0;
+    const dots = slides.map((_, i) => {
+      const d = document.createElement('button');
+      d.setAttribute('aria-label', 'Image ' + (i + 1));
+      d.addEventListener('click', () => show(i));
+      dotsWrap.appendChild(d);
+      return d;
+    });
+
+    function show(i) {
+      current = (i + slides.length) % slides.length;
+      slides.forEach((s, idx) => s.classList.toggle('is-active', idx === current));
+      dots.forEach((d, idx) => d.classList.toggle('is-active', idx === current));
+    }
+
+    gallery.querySelector('[data-prev]').addEventListener('click', () => show(current - 1));
+    gallery.querySelector('[data-next]').addEventListener('click', () => show(current + 1));
+    show(0);
+  });
+</script>
 
 <style>
 .why-jet { padding: 80px 0; background: var(--color-bg-alt); }
@@ -61,6 +165,24 @@ const products = [
 .product-detail[data-reverse="true"] .detail-grid > * { direction: ltr; }
 .detail-visual { background-image: linear-gradient(160deg,#f1f7f9,#dbeaee); border: 1px solid rgba(0,188,212,0.12); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 2.5rem; min-height: 340px; display: flex; align-items: center; justify-content: center; }
 .detail-visual img { max-height: 320px; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0,60,80,0.18)); }
+
+/* === Experience it — water video (YouTube) === */
+.water-video { position: relative; height: 70vh; min-height: 420px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #0d1f24; }
+.water-video-media { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.water-video-media > div { width: 100%; height: 100%; }
+.water-video-overlay { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(0,188,212,0.10), rgba(13,31,36,0.45)); pointer-events: none; }
+.water-video-tag { position: absolute; bottom: 32px; left: 32px; z-index: 2; color: #fff; font-size: clamp(1rem,2vw,1.4rem); font-weight: 500; letter-spacing: 0.02em; text-shadow: 0 2px 20px rgba(0,30,40,0.6); }
+
+/* Slideshow gallery for products with multiple images */
+.gallery { position: relative; width: 100%; height: 340px; overflow: hidden; border-radius: var(--radius-lg); }
+.gallery-track { position: relative; width: 100%; height: 100%; }
+.gallery-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; max-height: none; filter: drop-shadow(0 20px 40px rgba(0,60,80,0.18)); opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
+.gallery-slide.is-active { opacity: 1; pointer-events: auto; }
+.gallery-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border: none; border-radius: 50%; background: rgba(255,255,255,0.9); color: var(--color-primary-dark); font-size: 1.6rem; line-height: 1; cursor: pointer; box-shadow: var(--shadow-md); z-index: 2; display: flex; align-items: center; justify-content: center; transition: background 0.2s ease, color 0.2s ease; }
+.gallery-nav:hover { background: var(--color-primary); color: #fff; }
+.gallery-prev { left: 12px; }
+.gallery-next { right: 12px; }
+.gallery-dots { position: absolute; bottom: 14px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 2; }
 .detail-tag { display: inline-block; color: var(--color-primary); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; }
 .detail-body h2 { font-size: clamp(1.6rem,3vw,2.2rem); color: var(--color-primary-dark); margin-bottom: 0.75rem; }
 .detail-power { display: inline-flex; align-items: baseline; gap: 0.4rem; background: rgba(0,188,212,0.1); border: 1px solid rgba(0,188,212,0.25); border-radius: var(--radius-pill); padding: 0.4rem 1rem; font-size: 0.9rem; color: #555; margin-bottom: 1.5rem; }
@@ -69,4 +191,10 @@ const products = [
 .detail-points li { position: relative; padding-left: 1.6rem; color: #444; line-height: 1.6; font-size: 0.98rem; }
 .detail-points li::before { content: ''; position: absolute; left: 0; top: 0.55em; width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); }
 @media (max-width: 800px) { .why-grid, .detail-grid { grid-template-columns: 1fr; gap: 2rem; } .product-detail[data-reverse="true"] .detail-grid { direction: ltr; } }
+</style>
+
+<style is:global>
+/* Gallery dots are created at runtime via JS — global, not scoped */
+.gallery-dots button { width: 8px; height: 8px; border: 1px solid rgba(0,60,80,0.2); border-radius: 50%; padding: 0; background: rgba(255,255,255,0.6); cursor: pointer; transition: background 0.2s ease, transform 0.2s ease; }
+.gallery-dots button.is-active { background: var(--color-primary); transform: scale(1.25); }
 </style>

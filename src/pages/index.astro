@@ -43,7 +43,7 @@ const partners = [
           <a href="/produktseite/">Produkte</a>
           <a href="/karriere/">Karriere</a>
           <a href="/team/">Team</a>
-          <a href="https://www.sylents.de/shop/">Shop</a>
+          <a href="/shop-info/">Shop</a>
           <a href="/en/" class="lang-switch">EN</a>
         </nav>
       </div>
@@ -607,20 +607,8 @@ const partners = [
   gap: 0.5rem;
   z-index: 3;
 }
-.dot {
-  width: 9px;
-  height: 9px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background: rgba(0, 188, 212, 0.3);
-  cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-.dot.is-active {
-  background: var(--color-primary);
-  transform: scale(1.25);
-}
+/* .dot-Styles liegen im is:global-Block am Dateiende — Dots werden per JS erzeugt,
+   scoped Styles greifen dort nicht (data-astro-cid fehlt) */
 @media (max-width: 800px) {
   .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .intro-visual { min-height: 280px; padding: 1.5rem; }
@@ -1055,5 +1043,23 @@ const partners = [
 @media (max-width: 600px) {
   .site-header nav { gap: 1rem; }
   .site-header nav a { font-size: 0.85rem; }
+}
+</style>
+
+<style is:global>
+/* Dots werden erst zur Laufzeit per JS erzeugt — daher global, nicht scoped */
+.slide-dots .dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 188, 212, 0.3);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.slide-dots .dot.is-active {
+  background: var(--color-primary);
+  transform: scale(1.25);
 }
 </style>

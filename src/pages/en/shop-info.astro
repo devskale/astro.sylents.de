@@ -1,0 +1,116 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import '../../styles/tokens.css';
+
+const formPath = '/en/shop-info/';
+---
+
+<SiteLayout lang="en" title="Shop | Sylents" description="The Sylents shop is in the making – leave your email address and we will notify you as soon as the shop is available.">
+  <section class="page-hero">
+    <div class="container">
+      <span class="breadcrumb">Shop</span>
+      <h1>The Sylents shop is in the making.</h1>
+      <p>Our products will soon be orderable directly online – leave your email address and we will notify you as soon as the shop is available.</p>
+    </div>
+  </section>
+
+  <section class="notify-section">
+    <div class="container notify-grid">
+      <div class="notify-body">
+        <span class="eyebrow">Pre-register</span>
+        <h2>First come, first out on the water.</h2>
+        <p class="lead">Leave your email address – we will personally notify you as soon as the shop launches. Look forward to early-bird discounts.</p>
+
+        <form class="notify-form" action="/shop-notify.php" method="post">
+          <input type="hidden" name="lang" value="en" />
+          <input type="hidden" name="redirect" value={formPath} />
+          <!-- Honeypot against simple bot spam (must stay empty) -->
+          <input type="text" name="fax" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <label class="field">
+            <span>Email address *</span>
+            <input type="email" name="email" required placeholder="your@email.com" autocomplete="email" />
+          </label>
+
+          <label class="consent">
+            <input type="checkbox" name="consent" value="1" required />
+            <span>I accept the <a href="/en/privacy/">privacy policy</a> and want to be notified as soon as the shop is available.*</span>
+          </label>
+
+          <button type="submit" class="btn">Notify me</button>
+        </form>
+
+        <div class="form-msg ok" id="msg-ok" hidden>
+          <strong>Thank you!</strong> We will notify you as soon as the shop is available.
+          <span id="msg-dup" hidden>This email address is already registered.</span>
+        </div>
+        <div class="form-msg err" id="msg-err" hidden></div>
+      </div>
+
+      <div class="notify-visual">
+        <img src="/products/outboard/frontal.png" alt="Sylents outboard SY3.1 – front view" />
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<script is:inline>
+  // Feedback after redirect from the PHP endpoint (?ok=1 / ?dup=1 / ?error=…)
+  (function () {
+    var p = new URLSearchParams(location.search);
+    if (p.has('ok')) {
+      var ok = document.getElementById('msg-ok');
+      if (ok) ok.hidden = false;
+      if (p.has('dup')) {
+        var dup = document.getElementById('msg-dup');
+        if (dup) dup.hidden = false;
+      }
+    }
+    if (p.has('error')) {
+      var err = document.getElementById('msg-err');
+      if (err) {
+        var texts = {
+          email: 'Please enter a valid email address.',
+          consent: 'Please accept the privacy policy.',
+          bot: 'Something went wrong. Please try again.'
+        };
+        err.textContent = texts[p.get('error')] || texts.bot;
+        err.hidden = false;
+      }
+    }
+    if (p.has('ok') || p.has('error')) history.replaceState(null, '', location.pathname);
+  })();
+</script>
+
+<style>
+.notify-section { padding: 80px 0; }
+.notify-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: center; }
+.notify-body h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-bottom: 1rem; }
+.notify-body .lead { color: #444; font-size: 1.08rem; line-height: 1.7; margin-bottom: 2rem; max-width: 520px; }
+
+.notify-form { display: flex; flex-direction: column; gap: 1.25rem; max-width: 460px; }
+.field { display: flex; flex-direction: column; gap: 0.4rem; }
+.field span { font-size: 0.85rem; font-weight: 600; color: var(--color-text-secondary); }
+.field input { border: none; border-bottom: 1px solid #ccc; border-radius: 0; padding: 0.85rem 0.5rem; font-family: inherit; font-size: 1rem; color: var(--color-text-main); background: #fff; }
+.field input:focus { outline: none; border-bottom-color: var(--color-primary); }
+
+.consent { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.85rem; color: #555; line-height: 1.5; }
+.consent input { margin-top: 0.2rem; accent-color: var(--color-primary); }
+.consent a { color: var(--color-primary-dark); }
+
+.notify-form .btn { align-self: flex-start; margin-top: 0.5rem; }
+
+.form-msg { margin-top: 1.5rem; padding: 1rem 1.25rem; border-radius: var(--radius-md, 10px); font-size: 0.95rem; line-height: 1.5; max-width: 460px; }
+.form-msg.ok { background: rgba(0, 188, 212, 0.08); border: 1px solid rgba(0, 188, 212, 0.35); color: var(--color-primary-dark); }
+.form-msg.err { background: rgba(200, 40, 40, 0.06); border: 1px solid rgba(200, 40, 40, 0.3); color: #8a2a2a; }
+.form-msg span { display: block; margin-top: 0.35rem; font-size: 0.85rem; }
+
+.notify-visual { display: flex; align-items: center; justify-content: center; background-image: linear-gradient(160deg, #f1f7f9, #dbeaee); border: 1px solid rgba(0, 188, 212, 0.12); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); padding: 2.5rem; min-height: 380px; }
+.notify-visual img { max-height: 360px; object-fit: contain; filter: drop-shadow(0 20px 40px rgba(0, 60, 80, 0.18)); }
+
+@media (max-width: 800px) {
+  .notify-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .notify-visual { min-height: 280px; padding: 1.5rem; }
+  .notify-visual img { max-height: 260px; }
+}
+</style>
