@@ -1,7 +1,7 @@
 ---
 id: outboard
 order: 1
-img: /outboard.png
+img: /products/syve.png
 gallery:
   - /products/outboard/frontal.png
   - /products/outboard/seitlich-re.png
