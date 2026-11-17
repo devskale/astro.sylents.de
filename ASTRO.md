@@ -56,7 +56,9 @@ Dots, dynamische Listen). Solche Regeln gehören in einen eigenen Block:
   (`02_Sylents B1.0e.jpg` → `products/sylents-b10e.jpg`).
 - Vor Deploy web-optimieren, z. B.:
   `magick in.jpg -auto-orient -resize x1200 -strip -interlace Plane -quality 82 out.jpg`
-- **Pfad `/shop/` niemals in Astro anlegen** — live belegt durch WordPress (siehe AGENTS.md).
+- **Pfad `/shop/` bei sylents.de nicht verwenden, solange der WordPress-Shop dort
+  liegt** (Deployment-Konflikt, siehe AGENTS.md). Fällt der WP-Shop weg, ist der Pfad
+  wieder frei.
 
 ## Formulare / PHP auf all-inkl
 

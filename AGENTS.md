@@ -15,8 +15,8 @@ pnpm build     # build → dist/
 ## Shop-Voranmeldung (Email-Registry)
 
 - Nav „Shop" → `/shop-info/` (DE) / `/en/shop-info/` (EN) — interne Coming-Soon-Seite,
-  solange der WP-Shop pausiert. **Pfad `/shop/` nie in Astro anlegen** (kollidiert live
-  mit WordPress unter sylents.de/shop/).
+  solange der WP-Shop pausiert. **Pfad `/shop/` (bei sylents.de) nicht verwenden,
+  solange WordPress dort liegt** — fällt der WP-Shop weg, ist der Pfad frei.
 - Formular → `public/shop-notify.php` (wird mitdeployt): speichert
   `sylents.de/shop-notify-data/registrations.csv` (**oberhalb** des Docroots, per HTTP
   nicht abrufbar) und mailt hi@sylents.de. Duplikat-Emails werden erkannt.
