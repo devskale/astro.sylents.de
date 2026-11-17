@@ -1,9 +1,8 @@
 ---
 id: inboard
 order: 2
-img: /inboard.png
+img: /products/inboard-jet.jpg
 gallery:
-  - /products/inboard-jet.jpg
   - /products/inboard-bench.png
 de:
   name: Innenborder

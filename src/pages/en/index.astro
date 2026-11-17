@@ -27,14 +27,14 @@ const benefitIcons = [
 const benefits = home.benefits.cards.map((c, i) => ({ icon: benefitIcons[i], title: c.title, body: c.text }));
 
 const productMeta = [
-  { img: '/inboard.png', alt: 'Inboard', href: '/en/products/#inboard' },
+  { img: '/products/inboard-jet.jpg', alt: 'Inboard', href: '/en/products/#inboard' },
   { img: '/outboard.png', alt: 'Outboard', href: '/en/products/#outboard',
     slides: [
       { src: '/products/outboard/frontal.png', alt: 'Sylents outboard SY3.1 – front view' },
       { src: '/products/outboard/seitlich-re.png', alt: 'Sylents outboard SY3.1 – right side view' },
       { src: '/products/outboard/eingeklappt.png', alt: 'Sylents outboard SY3.1 – folded' },
     ] },
-  { img: '/pod.png', alt: 'Pod', href: '/en/products/' },
+  { img: '/products/pod-studio.jpg', alt: 'Pod', href: '/en/products/' },
 ];
 const products = productMeta.map((p, i) => ({ ...p, ...home.productCards.cards[i] }));
 ---

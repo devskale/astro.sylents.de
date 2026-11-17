@@ -1,9 +1,8 @@
 ---
 id: pod
 order: 3
-img: /pod.png
+img: /products/pod-studio.jpg
 gallery:
-  - /products/pod-studio.jpg
   - /products/pod-render.png
   - /products/pod-prototype.png
 de:
